@@ -5,8 +5,6 @@ const wizardTabLinks = document.querySelectorAll('.wizard-tab__nav-link div');
 const wizardTab = document.querySelectorAll('.wizard-tab__content-item');
 const wizardParametrs = {};
 
-
-
 // Function to handle radio list click events
 function handleRadioListClick(e, radioList) {
   radioLists.forEach(radioList => {
@@ -58,13 +56,14 @@ wizardParametrs['sides'] = {
   'side-03': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} },
   'side-04': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} }
 }
-wizardParametrs['attachment'] = {"basic-options": {"element-name": "No attachment"}};
-wizardParametrs['light'] = {"basic-options": {"element-name": "No lightning"}};
+wizardParametrs['attachment'] = {"basic-options": {"element-name": ""}};
+wizardParametrs['light'] = {"basic-options": {"element-name": ""}};
 wizardParametrs['floor'] = {"basic-options": {"element-name": "Laminate"}};
-wizardParametrs['accessories'] = {"basic-options": {"element-name": "No accessories"}};
+wizardParametrs['accessories'] = {"basic-options": {"element-name": ""}};
 
 
 const wizardTabContent = document.querySelectorAll('[data-tab]');
+
 wizardTabContent.forEach(tab => {
   // based on default configuration, set active class to radio buttons
   const radioButtons = tab.querySelectorAll('input');
@@ -91,9 +90,7 @@ wizardTabContent.forEach(tab => {
         radio.parentElement.classList.add('active');
       }
     }
-  });
-
-
+});
 
   tab.addEventListener('click', (e) => {
     const side = e.target.closest('[data-side]');
