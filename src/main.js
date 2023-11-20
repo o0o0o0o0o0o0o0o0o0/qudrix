@@ -1,87 +1,157 @@
-import './styles/style.css'
-
+// Selecting DOM elements
 const radioLists = document.querySelectorAll('.wizard-sidebar__elements-list');
 const codeElement = document.querySelector('pre');
 const wizardTabLinks = document.querySelectorAll('.wizard-tab__nav-link div');
-const wizardTab  = document.querySelectorAll('.wizard-tab__content-item');
-
+const wizardTab = document.querySelectorAll('.wizard-tab__content-item');
 const wizardParametrs = {};
 
+
+
+// Function to handle radio list click events
+function handleRadioListClick(e, radioList) {
+  radioLists.forEach(radioList => {
+    // on click on list check if event target is label or radio button
+    radioList.addEventListener('click', (e) => {
+      if (e.target.tagName === 'LABEL') {
+        radioList.querySelectorAll('label').forEach(label => {
+          label.classList.remove('active');
+        });
+        e.target.classList.add('active');
+      }
+      if (e.target.tagName === 'INPUT') {
+        radioList.querySelectorAll('label').forEach(label => {
+          label.classList.remove('active');
+        });
+        e.target.parentElement.classList.add('active');
+      }
+    });
+  });
+};
+
+// Adding click event listeners to radio lists
 radioLists.forEach(radioList => {
-  // on click on list check if event target is label or radio button
   radioList.addEventListener('click', (e) => {
-    if (e.target.tagName === 'LABEL') {
-      radioList.querySelectorAll('label').forEach(label => {
-        label.classList.remove('active');
-      });
-      e.target.classList.add('active');
+    handleRadioListClick(e, radioList);
+  });
+});
+
+// Function to update codeElement content based on wizardParametrs object
+const updateCodeElement = () => {
+  codeElement.textContent = JSON.stringify(wizardParametrs, null, 2).replace(/,/g, ',\n');
+};
+
+// Creating wizardParametrs object based on wizardTabLinks
+wizardTabLinks.forEach((link, i) => {
+  const linkText = link.textContent.trim().toLowerCase();
+  if (linkText !== 'summary') {
+    wizardParametrs[linkText] = {};
+    wizardTab[i].setAttribute('data-tab', linkText);
+  }
+});
+
+// default configuration
+wizardParametrs['size'] = {"element-name": "Q1"};
+wizardParametrs['roof'] = {"basic-options": {"element-name": "Panel Wall"}};
+wizardParametrs['sides'] = {
+  'side-01': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} },
+  'side-02': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} },
+  'side-03': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} },
+  'side-04': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} }
+}
+wizardParametrs['attachment'] = {"basic-options": {"element-name": "No attachment"}};
+wizardParametrs['light'] = {"basic-options": {"element-name": "No lightning"}};
+wizardParametrs['floor'] = {"basic-options": {"element-name": "Laminate"}};
+wizardParametrs['accessories'] = {"basic-options": {"element-name": "No accessories"}};
+
+
+const wizardTabContent = document.querySelectorAll('[data-tab]');
+wizardTabContent.forEach(tab => {
+  // based on default configuration, set active class to radio buttons
+  const radioButtons = tab.querySelectorAll('input');
+
+  radioButtons.forEach(radio => {
+    const dataOption = radio.parentElement.getAttribute('data-option');
+    const dataName = radio.parentElement.getAttribute('data-name');
+    const tabName = tab.getAttribute('data-tab');
+    const side = radio.closest('[data-side]');
+    const sideText = side ? side.dataset.side : null;
+
+    if (sideText) {
+      if (wizardParametrs[tabName][sideText][dataOption]) {
+        if (wizardParametrs[tabName][sideText][dataOption]["element-name"] === dataName) {
+          radio.parentElement.classList.add('active');
+        }
+      }
+    } else if (wizardParametrs[tabName][dataOption]) {
+      if (wizardParametrs[tabName][dataOption]["element-name"] === dataName) {
+        radio.parentElement.classList.add('active');
+      }
     }
-    if (e.target.tagName === 'INPUT') {
-      radioList.querySelectorAll('label').forEach(label => {
-        label.classList.remove('active');
-      });
-      e.target.parentElement.classList.add('active');
+  });
+
+
+  const tabName = tab.getAttribute('data-tab');
+  tab.addEventListener('click', (e) => {
+    const side = e.target.closest('[data-side]');
+    const sideText = side ? side.dataset.side : null;
+    const tabText = tab.dataset.tab;
+    if (sideText) {
+      handleSideClick(tabText, sideText, e.target.parentElement);
+    } else if (tabName === 'size') {
+      handleSizeClick(tabText, e.target.parentElement);
+    } else if (tabName !== 'summary' && tabName !== 'size' && tabName !== 'accessories') {
+      handleOtherClick(tabText, e.target.parentElement, e.target.parentElement.getAttribute('data-option'));
     }
   });
 });
 
-// based on wizardTabLinks text content add this text to wizardParametrs object
-wizardTabLinks.forEach((link, i) => {
-  // if it's not Summury
-  if (link.textContent !== 'Summary') {
-    wizardParametrs[link.textContent.toLocaleLowerCase()] = {};
-    wizardTab[i].setAttribute('data-tab', link.textContent.toLocaleLowerCase());
-  }
-});
+function handleSideClick(tabText, sideText, target) {
+  const dataOption = target.getAttribute('data-option');
+  const dataName = target.getAttribute('data-name');
+  wizardParametrs[tabText][sideText][dataOption] = {"element-name": dataName};
 
-// fuctionn to update codeElement content based on wizardParametrs object
-const updateCodeElement = () => {
-  codeElement.textContent = JSON.stringify(wizardParametrs, null, 2).replace(/,/g, ',\n');
+  updateCodeElement();
 }
 
+function handleSizeClick(tabText, target) {
+  const dataName = target.getAttribute('data-name');
+  wizardParametrs[tabText] = {"element-name": dataName};
+  updateCodeElement();
+}
 
-// get elements with data-tab attribute
-const wizardTabContent = document.querySelectorAll('[data-tab]');
+function handleOtherClick(tabText, target, dataOption) {
+  const dataName = target.getAttribute('data-name');
+  wizardParametrs[tabText][dataOption] = {"element-name": dataName};
 
-// check inside wizardTabContent if it has elements with attr data-side and add side to wizardParametrs with the same key as data-tab
-wizardTabContent.forEach(tab => {
+  updateCodeElement();
+}
+
+updateCodeElement();
+
+
+
+  /*
   const wizardTabSide = tab.querySelectorAll('[data-side]');
   wizardTabSide.forEach(side => {
-    wizardParametrs[tab.dataset.tab][side.dataset.side] = {};
-    // add inside each side param keys "basic options" and "variations" with {} as value
-    wizardParametrs[tab.dataset.tab][side.dataset.side]['basic-options'] = {};
-    wizardParametrs[tab.dataset.tab][side.dataset.side]['variations'] = {};
-    // add event listener to each side on click
+    const tabText = tab.dataset.tab;
+    const sideText = side.dataset.side;
+    wizardParametrs[tabText][sideText] = {
+      'basic-options': {},
+      'variations': {}
+    };
+
     side.addEventListener('click', (e) => {
       if (e.target.tagName === 'INPUT') {
         const dataOption = e.target.parentElement.getAttribute('data-option');
         const dataName = e.target.parentElement.getAttribute('data-name');
+        const targetParam = wizardParametrs[tabText][sideText][dataOption];
 
-        if (dataOption === 'basic-options') {
-          if (wizardParametrs[tab.dataset.tab][side.dataset.side]['basic-options'].hasOwnProperty(dataName)) {
-            // Element exists, replace its value with a new name
-            wizardParametrs[tab.dataset.tab][side.dataset.side]['basic-options']["element-name"] = dataName;
-          } else {
-            // Element doesn't exist, add a new element
-            wizardParametrs[tab.dataset.tab][side.dataset.side]['basic-options']["element-name"] = dataName;
-          }
+        if (targetParam.hasOwnProperty(dataName)) {
+          targetParam["element-name"] = dataName; // Element exists, replace its value with a new name
         } else {
-          if (wizardParametrs[tab.dataset.tab][side.dataset.side]['variations'].hasOwnProperty(dataName)) {
-            // Element exists, replace its value with a new name
-            wizardParametrs[tab.dataset.tab][side.dataset.side]['variations']["element-name"] = dataName;
-          } else {
-            // Element doesn't exist, add a new element
-            wizardParametrs[tab.dataset.tab][side.dataset.side]['variations']["element-name"] = dataName;
-          }
+          targetParam["element-name"] = dataName; // Element doesn't exist, add a new element
         }
         updateCodeElement();
       }
     });
-  });
-});
-
-
-
-
-
-updateCodeElement();
+  });*/
