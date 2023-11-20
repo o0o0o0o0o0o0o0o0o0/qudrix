@@ -68,7 +68,7 @@ const wizardTabContent = document.querySelectorAll('[data-tab]');
 wizardTabContent.forEach(tab => {
   // based on default configuration, set active class to radio buttons
   const radioButtons = tab.querySelectorAll('input');
-
+  const tabName = tab.getAttribute('data-tab');
   radioButtons.forEach(radio => {
     const dataOption = radio.parentElement.getAttribute('data-option');
     const dataName = radio.parentElement.getAttribute('data-name');
@@ -86,11 +86,15 @@ wizardTabContent.forEach(tab => {
       if (wizardParametrs[tabName][dataOption]["element-name"] === dataName) {
         radio.parentElement.classList.add('active');
       }
+    } else if(tabName === 'size') {
+      if (wizardParametrs[tabName]["element-name"] === dataName) {
+        radio.parentElement.classList.add('active');
+      }
     }
   });
 
 
-  const tabName = tab.getAttribute('data-tab');
+
   tab.addEventListener('click', (e) => {
     const side = e.target.closest('[data-side]');
     const sideText = side ? side.dataset.side : null;
@@ -99,7 +103,7 @@ wizardTabContent.forEach(tab => {
       handleSideClick(tabText, sideText, e.target.parentElement);
     } else if (tabName === 'size') {
       handleSizeClick(tabText, e.target.parentElement);
-    } else if (tabName !== 'summary' && tabName !== 'size' && tabName !== 'accessories') {
+    } else if (tabName !== 'summary' && tabName !== 'size') {
       handleOtherClick(tabText, e.target.parentElement, e.target.parentElement.getAttribute('data-option'));
     }
   });
@@ -108,8 +112,9 @@ wizardTabContent.forEach(tab => {
 function handleSideClick(tabText, sideText, target) {
   const dataOption = target.getAttribute('data-option');
   const dataName = target.getAttribute('data-name');
-  wizardParametrs[tabText][sideText][dataOption] = {"element-name": dataName};
-
+  if(sideText !== 'null' && sideText !== null && dataOption !== 'null' && dataOption !== null && dataName !== 'null' && dataName !== null) {
+    wizardParametrs[tabText][sideText][dataOption] = {"element-name": dataName};
+  }  
   updateCodeElement();
 }
 
