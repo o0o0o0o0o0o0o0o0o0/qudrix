@@ -53,17 +53,17 @@ wizardTabLinks.forEach((link, i) => {
 
 // default configuration
 wizardParametrs['size'] = {"element-name": "Q1"};
-wizardParametrs['roof'] = {"basic-options": {"element-name": "Panel Wall"}};
+wizardParametrs['roof'] = {"element-name": "Panel Wall"};
 wizardParametrs['sides'] = {
-  'side-01': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} },
-  'side-02': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} },
-  'side-03': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} },
-  'side-04': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} },
-}
-wizardParametrs['attachment'] = {"basic-options": {"element-name": ""}};
-wizardParametrs['light'] = {"basic-options": {"element-name": ""}};
-wizardParametrs['floor'] = {"basic-options": {"element-name": "Laminate"}};
-wizardParametrs['accessories'] = {"basic-options": {"element-name": ""}};
+  'side-01': {"element-name": "Mirror Glass"},
+  'side-02': {"element-name": "Mirror Glass"},
+  'side-03': {"element-name": "Mirror Glass"},
+  'side-04': {"element-name": "Mirror Glass"},
+};
+wizardParametrs['attachment'] = {"element-name": ""};
+wizardParametrs['light'] = {"element-name": ""};
+wizardParametrs['floor'] = {"element-name": "Laminate"};
+wizardParametrs['accessories'] = {"element-name": ""};
 
 
 const wizardTabContent = document.querySelectorAll('[data-tab]');
@@ -73,21 +73,20 @@ wizardTabContent.forEach(tab => {
   const radioButtons = tab.querySelectorAll('input');
   const tabName = tab.getAttribute('data-tab');
   radioButtons.forEach(radio => {
-    const dataOption = radio.parentElement.getAttribute('data-option');
     const dataName = radio.parentElement.getAttribute('data-name');
     const tabName = tab.getAttribute('data-tab');
     const side = radio.closest('[data-side]');
     const sideText = side ? side.dataset.side : null;
 
     if (sideText) {
-      if (wizardParametrs[tabName][sideText][dataOption]) {
-        if (wizardParametrs[tabName][sideText][dataOption]["element-name"] === dataName) {
+      if (wizardParametrs[tabName][sideText]) {
+        if (wizardParametrs[tabName][sideText]["element-name"] === dataName) {
           radio.parentElement.classList.add('active');
           radio.checked = true;
         }
       }
-    } else if (wizardParametrs[tabName][dataOption]) {
-      if (wizardParametrs[tabName][dataOption]["element-name"] === dataName) {
+    } else if (wizardParametrs[tabName]) {
+      if (wizardParametrs[tabName]["element-name"] === dataName) {
         radio.parentElement.classList.add('active');
         radio.checked = true;
       }
@@ -106,33 +105,25 @@ wizardTabContent.forEach(tab => {
     const tabText = tab.dataset.tab;
     if (sideText) {
       handleSideClick(tabText, sideText, e.target.parentElement);
-    } else if (tabName === 'size') {
-      handleSizeClick(tabText, e.target.parentElement);
-    } else if (tabName !== 'summary' && tabName !== 'size') {
-      handleOtherClick(tabText, e.target.parentElement, e.target.parentElement.getAttribute('data-option'));
+    } else if (tabName !== 'summary') {
+      handleClick(tabText, e.target.parentElement);
     }
   });
 });
 
 function handleSideClick(tabText, sideText, target) {
-  const dataOption = target.getAttribute('data-option');
   const dataName = target.getAttribute('data-name');
-  if(sideText !== 'null' && sideText !== null && dataOption !== 'null' && dataOption !== null && dataName !== 'null' && dataName !== null) {
-    wizardParametrs[tabText][sideText][dataOption] = {"element-name": dataName};
+  if(sideText !== 'null' && sideText !== null && dataName !== 'null' && dataName !== null) {
+    wizardParametrs[tabText][sideText]= {"element-name": dataName};
   }  
   updateCodeElement();
 }
 
-function handleSizeClick(tabText, target) {
+function handleClick(tabText, target) {
   const dataName = target.getAttribute('data-name');
-  wizardParametrs[tabText] = {"element-name": dataName};
-  updateCodeElement();
-}
-
-function handleOtherClick(tabText, target, dataOption) {
-  const dataName = target.getAttribute('data-name');
-  wizardParametrs[tabText][dataOption] = {"element-name": dataName};
-
+  if( dataName !== 'null' && dataName !== null) {
+    wizardParametrs[tabText] = {"element-name": dataName};
+  }
   updateCodeElement();
 }
 
