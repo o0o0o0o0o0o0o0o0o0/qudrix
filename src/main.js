@@ -1,5 +1,7 @@
+import {loadStripe} from '@stripe/stripe-js';
+
 // Selecting DOM elements
-const radioLists = document.querySelectorAll('.wizard-sidebar__elements-list');
+const radioLists = document.querySelectorAll('.radio-trigger');
 const codeElement = document.querySelector('pre');
 const wizardTabLinks = document.querySelectorAll('.wizard-tab__nav-link div');
 const wizardTab = document.querySelectorAll('.wizard-tab__content-item');
@@ -15,12 +17,14 @@ function handleRadioListClick(e, radioList) {
           label.classList.remove('active');
         });
         e.target.classList.add('active');
+        e.target.querySelector('input').checked = true;
       }
       if (e.target.tagName === 'INPUT') {
         radioList.querySelectorAll('label').forEach(label => {
           label.classList.remove('active');
         });
         e.target.parentElement.classList.add('active');
+        e.target.checked = true;
       }
     });
   });
@@ -54,7 +58,7 @@ wizardParametrs['sides'] = {
   'side-01': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} },
   'side-02': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} },
   'side-03': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} },
-  'side-04': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} }
+  'side-04': { "basic-options": { "element-name": "Mirror Glass" }, "variations": {} },
 }
 wizardParametrs['attachment'] = {"basic-options": {"element-name": ""}};
 wizardParametrs['light'] = {"basic-options": {"element-name": ""}};
@@ -79,19 +83,23 @@ wizardTabContent.forEach(tab => {
       if (wizardParametrs[tabName][sideText][dataOption]) {
         if (wizardParametrs[tabName][sideText][dataOption]["element-name"] === dataName) {
           radio.parentElement.classList.add('active');
+          radio.checked = true;
         }
       }
     } else if (wizardParametrs[tabName][dataOption]) {
       if (wizardParametrs[tabName][dataOption]["element-name"] === dataName) {
         radio.parentElement.classList.add('active');
+        radio.checked = true;
       }
     } else if(tabName === 'size') {
       if (wizardParametrs[tabName]["element-name"] === dataName) {
         radio.parentElement.classList.add('active');
+        radio.checked = true;
       }
     }
-});
+  });
 
+  // Adding click event listeners to wizardTabLinks
   tab.addEventListener('click', (e) => {
     const side = e.target.closest('[data-side]');
     const sideText = side ? side.dataset.side : null;
@@ -131,29 +139,3 @@ function handleOtherClick(tabText, target, dataOption) {
 updateCodeElement();
 
 
-
-  /*
-  const wizardTabSide = tab.querySelectorAll('[data-side]');
-  wizardTabSide.forEach(side => {
-    const tabText = tab.dataset.tab;
-    const sideText = side.dataset.side;
-    wizardParametrs[tabText][sideText] = {
-      'basic-options': {},
-      'variations': {}
-    };
-
-    side.addEventListener('click', (e) => {
-      if (e.target.tagName === 'INPUT') {
-        const dataOption = e.target.parentElement.getAttribute('data-option');
-        const dataName = e.target.parentElement.getAttribute('data-name');
-        const targetParam = wizardParametrs[tabText][sideText][dataOption];
-
-        if (targetParam.hasOwnProperty(dataName)) {
-          targetParam["element-name"] = dataName; // Element exists, replace its value with a new name
-        } else {
-          targetParam["element-name"] = dataName; // Element doesn't exist, add a new element
-        }
-        updateCodeElement();
-      }
-    });
-  });*/
