@@ -1,7 +1,16 @@
 import initializeAnimations from './parts/animations';
 import initializePopups from './components/popups';
+
+
 // ---- Init animations ----
-initializeAnimations();
+// init animation if it's not /404 url page
+if(window.location.pathname !== '/404' && window.location.pathname !== '/wizard/cube') {
+  initializeAnimations();
+  initializePopups();
+}
+
+
+
 
 // Selecting DOM elements
 const radioLists = document.querySelectorAll('.radio-trigger');
