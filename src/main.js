@@ -1,4 +1,7 @@
-import {loadStripe} from '@stripe/stripe-js';
+import initializeAnimations from './parts/animations';
+import initializePopups from './components/popups';
+// ---- Init animations ----
+initializeAnimations();
 
 // Selecting DOM elements
 const radioLists = document.querySelectorAll('.radio-trigger');
@@ -7,6 +10,7 @@ const wizardTabLinks = document.querySelectorAll('.wizard-tab__nav-link div');
 const wizardTab = document.querySelectorAll('.wizard-tab__content-item');
 const wizardParametrs = {};
 
+if(wizardTabLinks.length > 0) {
 // Function to handle radio list click events
 function handleRadioListClick(e, radioList) {
   radioLists.forEach(radioList => {
@@ -128,5 +132,5 @@ function handleClick(tabText, target) {
 }
 
 updateCodeElement();
-
+}
 
