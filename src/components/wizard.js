@@ -170,6 +170,14 @@ const initializeWizard = () => {
     
     // Handling update price
     const updatePrice = (price) => {
+      // chenge the price view, if price 1500, then 1,500 etc
+      const priceString = price.toString();
+      if(priceString.length > 3) {
+        const priceArr = priceString.split('');
+        priceArr.splice(priceArr.length - 3, 0, ',');
+        price = priceArr.join('');
+      }
+
       totalPriceText.textContent = `$${price}`
     };
 };
