@@ -3,7 +3,6 @@ import updateSession from "../parts/updateSession";
 
 const initializeWizard = () => {
   // Selecting DOM elements
-  const radioLists = document.querySelectorAll('.radio-trigger');
   const codeElement = document.querySelector('pre');
   const wizardTabLinks = document.querySelectorAll('.wizard-tab__nav-link div');
   const wizardTab = document.querySelectorAll('.wizard-tab__content-item');
@@ -14,35 +13,36 @@ const initializeWizard = () => {
   // Creating wizardParametrs object
   const wizardParametrs = {};
 
-    // Function to handle radio list click events
-    function handleRadioListClick(e, radioList) {
-      radioLists.forEach(radioList => {
-        // on click on list check if event target is label or radio button
-        radioList.addEventListener('click', (e) => {
-          if (e.target.tagName === 'LABEL') {
-            radioList.querySelectorAll('label').forEach(label => {
-              label.classList.remove('active');
-            });
-            e.target.classList.add('active');
-            e.target.querySelector('input').checked = true;
-          }
-          if (e.target.tagName === 'INPUT') {
-            radioList.querySelectorAll('label').forEach(label => {
-              label.classList.remove('active');
-            });
-            e.target.parentElement.classList.add('active');
-            e.target.checked = true;
-          }
-        });
-      });
-    };
+  // Function to handle radio list click event
+  function handleRadioListClick(e) {
+    const clickedElement = e.target;
+    console.log(clickedElement)
+    // Check if the click was on a label or an input
+    if (clickedElement.tagName === 'LABEL' || clickedElement.tagName === 'INPUT') {
+      const radioList = clickedElement.closest('.radio-trigger'); // Replace with your radio list class
+      console.log(clickedElement)
+      if (radioList) {
+        const labels = radioList.querySelectorAll('label');
 
-    // Adding click event listeners to radio lists
-    radioLists.forEach(radioList => {
-      radioList.addEventListener('click', (e) => {
-        handleRadioListClick(e, radioList);
-      });
-    });
+        // Remove 'active' class from all labels
+        labels.forEach(label => {
+          label.classList.remove('active');
+        });
+
+        // Add 'active' class to the clicked label or its parent label
+        if (clickedElement.tagName === 'LABEL') {
+          clickedElement.classList.add('active');
+          clickedElement.querySelector('input').checked = true;
+        } else if (clickedElement.tagName === 'INPUT') {
+          clickedElement.parentElement.classList.add('active');
+          clickedElement.checked = true;
+        }
+      }
+    }
+  }
+
+  // Adding a click event listener to the document to handle all clicks
+  document.addEventListener('click', handleRadioListClick);
 
     // Function to update codeElement content based on wizardParametrs object
     const updateCodeElement = () => {
@@ -71,7 +71,6 @@ const initializeWizard = () => {
     wizardParametrs['light'] = {"element-name": ""};
     wizardParametrs['floor'] = {"element-name": "Laminate"};
     wizardParametrs['accessories'] = {"element-name": ""};
-
 
     const wizardTabContent = document.querySelectorAll('[data-tab]');
 
