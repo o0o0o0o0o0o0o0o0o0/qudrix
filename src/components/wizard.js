@@ -7,6 +7,7 @@ const initializeWizard = () => {
   const wizardTabLinks = document.querySelectorAll('.wizard-tab__nav-link div');
   const wizardTab = document.querySelectorAll('.wizard-tab__content-item');
   const totalPriceText = document.querySelector('#total-price');
+  const wizardModelWrapper = document.querySelector('#model-wrapper');
   // Session id
   let sessionId;
 
@@ -19,8 +20,7 @@ const initializeWizard = () => {
     console.log(clickedElement)
     // Check if the click was on a label or an input
     if (clickedElement.tagName === 'LABEL' || clickedElement.tagName === 'INPUT') {
-      const radioList = clickedElement.closest('.radio-trigger'); // Replace with your radio list class
-      console.log(clickedElement)
+      const radioList = clickedElement.closest('.radio-trigger');
       if (radioList) {
         const labels = radioList.querySelectorAll('label');
 
@@ -136,18 +136,27 @@ const initializeWizard = () => {
     }
 
     updateCodeElement();
-
+    let counter = 0;
     // Handling init and update session
     function handleSession(){
       if(!sessionId){
         // init session
         initSession(wizardParametrs)
           .then(sessionData => {
-            console.log(sessionData.sessionId);
+            counter++;
             // update price
             updatePrice(sessionData.price);
             // update session id
             sessionId = sessionData.sessionId;
+            console.log(sessionData.sessionId, counter);
+            // adding iframe to wizardModelWrapper
+            const iframe = document.createElement('iframe');
+            iframe.setAttribute('src', `https://spiffy-frangollo-487b0a.netlify.app/?sessionId=${sessionId}`);
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('allowfullscreen', 'true');
+            iframe.setAttribute('scrolling', 'no');
+            iframe.setAttribute('style', 'width: 100%; height: 100%;');
+            wizardModelWrapper.appendChild(iframe);
           })
           .catch(error => {
             console.error('Error:', error);
