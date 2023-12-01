@@ -1,4 +1,7 @@
+import Lenis from '@studio-freight/lenis'
+
 function initializePopups(){
+  const lenis = new Lenis()
 const sliderPopupButtons = document.querySelectorAll('[data-sidebar="slider"]'),
   			formPopupButtons = document.querySelectorAll('[data-sidebar="form"]'),
   			sliderPopupClose = document.querySelectorAll('[data-sidebar="slider-close"]'),

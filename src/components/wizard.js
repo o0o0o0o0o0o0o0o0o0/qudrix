@@ -10,6 +10,7 @@ const initializeWizard = () => {
   const wizardModelWrapper = document.querySelector('#model-wrapper');
   // Session id
   let sessionId;
+  let amount = 0;
 
   // Creating wizardParametrs object
   const wizardParametrs = {};
@@ -17,7 +18,6 @@ const initializeWizard = () => {
   // Function to handle radio list click event
   function handleRadioListClick(e) {
     const clickedElement = e.target;
-    console.log(clickedElement)
     // Check if the click was on a label or an input
     if (clickedElement.tagName === 'LABEL' || clickedElement.tagName === 'INPUT') {
       const radioList = clickedElement.closest('.radio-trigger');
@@ -136,19 +136,18 @@ const initializeWizard = () => {
     }
 
     updateCodeElement();
-    let counter = 0;
     // Handling init and update session
     function handleSession(){
       if(!sessionId){
         // init session
         initSession(wizardParametrs)
           .then(sessionData => {
-            counter++;
             // update price
             updatePrice(sessionData.price);
             // update session id
             sessionId = sessionData.sessionId;
-            console.log(sessionData.sessionId, counter);
+            // add sessionId to cookie
+            document.cookie = `sessionId=${sessionId}`;
             // adding iframe to wizardModelWrapper
             const iframe = document.createElement('iframe');
             iframe.setAttribute('src', `https://spiffy-frangollo-487b0a.netlify.app/?sessionId=${sessionId}`);
@@ -186,6 +185,11 @@ const initializeWizard = () => {
         priceArr.splice(priceArr.length - 3, 0, ',');
         price = priceArr.join('');
       }
+
+      // add price to amount
+      amount = price;
+      // add amout to cookies
+      document.cookie = `amount=${amount}`;
 
       totalPriceText.textContent = `$${price}`
     };
