@@ -320,3 +320,43 @@ function updateCursorPosition(event, cursor) {
 function isDesktop() {
   return window.innerWidth >= 1024;
 }
+
+// Filter
+	const dropdownItem = document.querySelectorAll('.filters-dropdown__list--item');
+  const filterWrapper = document.querySelectorAll('.filter-collection__wrapper');
+  const resetFilter = document.querySelector('.filter-form__radio-label.is--reset');
+  
+  dropdownItem.forEach((item, i) => {
+    item.addEventListener('click', () => {
+      handleRemoveActiveClass();
+      handleFilterClick(item, filterWrapper[i]);
+      resetFilter.click();
+    });
+  });
+
+  // handle adding active class to filter and dropdown item if clicked item has the same data-filter-name attr
+  function handleFilterClick(filterDropdownItem, filterWrapper) {
+    const dropdownFilterName = filterDropdownItem.getAttribute('data-filter-name');
+    const filterWrapperFilterName = filterWrapper.getAttribute('data-filter-name');
+
+    if (dropdownFilterName === filterWrapperFilterName) {
+      filterDropdownItem.classList.add('active');
+      filterWrapper.classList.add('active');
+    } else {
+      filterDropdownItem.classList.remove('active');
+      filterWrapper.classList.remove('active');
+    }
+  };
+
+  // handling remove all active classes from filter and dropdown items
+  function handleRemoveActiveClass() {
+    dropdownItem.forEach((item) => {
+      item.classList.remove('active');
+    });
+
+    filterWrapper.forEach((item) => {
+      item.classList.remove('active');
+    });
+  };
+
+  // show first filter by default

@@ -114,6 +114,13 @@ const initializeWizard = () => {
         } else if (tabName !== 'summary') {
           handleClick(tabText, e.target.parentElement);
         }
+
+        // check if q2 is selected
+        if (wizardParametrs['size']['element-name'] === 'Q2') {
+          document.querySelector('.tab-content__size-notification').style.display = 'block';
+        } else {
+          document.querySelector('.tab-content__size-notification').style.display = 'none';
+        }
       });
     });
 
@@ -134,6 +141,12 @@ const initializeWizard = () => {
       updateCodeElement();
       handleSession();
     }
+
+    // function to handle building sidebar with accessories for elements that have accessories
+    const handleAccessories = (element) => {
+      // get accessories from element
+      
+    };
 
     updateCodeElement();
     // Handling init and update session
@@ -156,6 +169,16 @@ const initializeWizard = () => {
             iframe.setAttribute('scrolling', 'no');
             iframe.setAttribute('style', 'width: 100%; height: 100%;');
             wizardModelWrapper.appendChild(iframe);
+
+            // opacity 0 for loader and then display none
+            const loader = document.querySelector('.preloader');
+            
+            setTimeout(() => {
+              loader.style.opacity = 0;
+              setTimeout(() => {
+                loader.style.display = 'none';
+              }, 500);
+            }, 400);
           })
           .catch(error => {
             console.error('Error:', error);

@@ -1,16 +1,16 @@
 import Lenis from '@studio-freight/lenis'
 
 function initializePopups(){
-  const lenis = new Lenis()
-const sliderPopupButtons = document.querySelectorAll('[data-sidebar="slider"]'),
-  			formPopupButtons = document.querySelectorAll('[data-sidebar="form"]'),
-  			sliderPopupClose = document.querySelectorAll('[data-sidebar="slider-close"]'),
-        formPopupClose = document.querySelectorAll('[data-sidebar="form-close"]'),
-     		ctaPopupClose = document.querySelectorAll('[data-sidebar="cta-close"]'),
-        ctaMobile = document.querySelectorAll('[data-sidebar="cta-mobile"]'),
-  			sliderPopup = document.querySelector('.is--slider-popup'),
-        formPopup = document.querySelector('.is--form-popup'),
-        ctaPopup = document.querySelector('.is--cta-popup');
+  const lenis = new Lenis();
+  const sliderPopupButtons = document.querySelectorAll('[data-sidebar="slider"]'),
+          formPopupButtons = document.querySelectorAll('[data-sidebar="form"]'),
+          sliderPopupClose = document.querySelectorAll('[data-sidebar="slider-close"]'),
+          formPopupClose = document.querySelectorAll('[data-sidebar="form-close"]'),
+          ctaPopupClose = document.querySelectorAll('[data-sidebar="cta-close"]'),
+          ctaMobile = document.querySelectorAll('[data-sidebar="cta-mobile"]'),
+          sliderPopup = document.querySelector('.is--slider-popup'),
+          formPopup = document.querySelector('.is--form-popup'),
+          ctaPopup = document.querySelector('.is--cta-popup');
         
   const openSidebar = (popupElem) => {
   	popupElem.classList.add('popup-open');

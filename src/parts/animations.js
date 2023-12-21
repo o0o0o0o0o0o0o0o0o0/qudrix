@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import Lenis from '@studio-freight/lenis'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 
+
 export default function initializeAnimations() {
 
   gsap.registerPlugin(ScrollTrigger);
@@ -21,47 +22,79 @@ export default function initializeAnimations() {
   const horizontalStickyElement = document.querySelector('.horizontal-sticky__content');
   if(horizontalStickyElement){
   	const height = horizontalStickyElement.offsetWidth;
-      const width = (horizontalItems.length - 1) * 100;
+    const width = (horizontalItems.length - 1) * 100;
   
-  const updateSectionSize = () => {
-  	if(window.innerWidth > 991){
-      horizontalSection.style.height = `${height / 16}rem`;
-    } else {
-    	horizontalSection.style.height = `auto`;
-    }
-  };
-  updateSectionSize()
-  window.addEventListener('resize', updateSectionSize);
-  
-  const horizontalScrollAnimation = gsap.matchMedia();
+    const updateSectionSize = () => {
+      if(window.innerWidth > 991){
+        horizontalSection.style.height = `${height / 16}rem`;
+      } else {
+        horizontalSection.style.height = `auto`;
+      }
+    };
+    updateSectionSize()
+    window.addEventListener('resize', updateSectionSize);
+    
+    const horizontalScrollAnimation = gsap.matchMedia();
 
-  horizontalScrollAnimation.add("(min-width: 991px)", () => {
-    gsap.to('.horizontal-item', {
-      xPercent: -width,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '.horizontal-section',
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: true,
-      },
-  	});
-
-    horizontalItems.forEach(item => {
-      gsap.to(item.querySelectorAll('.image-full'), {
-        x: 100,
+    horizontalScrollAnimation.add("(min-width: 991px)", () => {
+      gsap.to('.horizontal-item', {
+        xPercent: -width,
         ease: 'none',
         scrollTrigger: {
           trigger: '.horizontal-section',
           start: 'top top',
           end: 'bottom bottom',
           scrub: true,
-        }
+        },
+      });
+
+      horizontalItems.forEach(item => {
+        gsap.to(item.querySelectorAll('.image-full'), {
+          x: 100,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.horizontal-section',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true,
+          }
+        });
       });
     });
-  });
-  
   }
+
+  // ---- End of Horizontal scroll animation ----
+
+  /*
+  const stickyTriggersTitle = document.querySelectorAll('.custdetails-item__title-text.custdetails-content__trigger');
+  const stickyTriggersDescription = document.querySelectorAll('.custdetails-item__content-text-description.custdetails-content__trigger');
+  const stickyTargets = document.querySelectorAll('.custdetails-content__target');
+  const stickyLottie = document.querySelector('.custdetails-item__accets-lottie');
+  const stickyLottieWrapper = document.querySelector('.custdetails-content__main');
+
+  if(stickyLottie){
+    const animation = lottie.loadAnimation({
+      container: stickyLottie,
+      renderer: 'svg',
+      loop: true,
+      autoplay: false,
+      path: 'https://uploads-ssl.webflow.com/651fba54cf5533331be57e03/6579ccf6c0fee83aa93f5a96_qudrix_lottie_alpha.json'
+    });
+
+    ScrollTrigger.create({
+      trigger: stickyLottieWrapper,
+      start: 'top top',
+      end: 'bottom bottom',
+      pin: true,
+      pinSpacing: true,
+      onUpdate: self => {
+        const progress = self.progress * animation.totalFrames;
+        animation.goToAndStop(progress, true);
+      }
+    });
+
+  }
+  */
 
   // ---- Home page animations ----
  let typeSplit = new SplitType("[text-split], [from-bottom]", {
@@ -279,7 +312,7 @@ export default function initializeAnimations() {
     createScrollTrigger($(this), tl);
   });
 
-  $(".hero-background__image").each(function (index) {
+  $(".hero-background").each(function (index) {
     let triggerElement = $(this);
     let targetElement = $(this);
 
@@ -287,13 +320,13 @@ export default function initializeAnimations() {
       scrollTrigger: {
         trigger: triggerElement,
         // trigger element - viewport
-        start: "bottom bottom",
+        start: "top top",
         end: "bottom top",
-        scrub: 1
+        scrub: 1,
       }
     });
     tl.to(targetElement, {
-      y: "-20%",
+      y: "-100%",
       duration: 1
     });
   });
@@ -360,4 +393,105 @@ export default function initializeAnimations() {
       }, index * 500);
     });
   }
+
+  // ---- End of Home page animations ----
+  /*
+
+  const filterFormRadioButtons = document.querySelectorAll('.filter-form__radio-button');
+
+  if(filterFormRadioButtons.length > 0){
+    filterFormRadioButtons.forEach((elem) => {
+      elem.addEventListener('change', (e) => {
+        const filterName = e.target.nextElementSibling.textContent.toLocaleLowerCase();
+        window.location.hash = filterName;
+      });
+    });
+  }
+
+  if(window.location.hash){
+    const hash = window.location.hash;
+    const filterFormRadioLabel = document.querySelectorAll(`.filter-form__radio-label`);
+    filterFormRadioLabel.forEach((elem) => {
+      const filterName = elem.textContent.toLocaleLowerCase();
+      if(filterName === hash.slice(1)){
+        const filterFormRadio = document.querySelectorAll('.filter-form__radio');
+        filterFormRadio.forEach((elem) => {
+          elem.classList.remove('is-active');
+        });
+        elem.previousElementSibling.checked = true;
+        elem.parentElement.classList.add('is-active');
+      }
+    });
+
+    // go trough all filters and if there is no match, clear the hash
+    let match = false;
+    filterFormRadioLabel.forEach((elem) => {
+      const filterName = elem.textContent.toLocaleLowerCase();
+      if(filterName === hash.slice(1)){
+        match = true;
+      }
+    });
+    if(!match){
+      window.location.hash = '';
+    }
+  }
+
+  // get all videos
+  const videos = document.querySelectorAll('video');
+
+  // loop through all videos
+  videos.forEach(video => {
+    // check if video is in viewport
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.intersectionRatio > 0) {
+          // play video
+          video.play();
+        } else {
+          // pause video
+          video.pause();
+        }
+      });
+    });
+    observer.observe(video);
+
+    // check if device is iphone and on low power mode
+    const isIphone = /iPhone/.test(navigator.userAgent) && !window.MSStream;
+    const isLowPowerMode = navigator.getBattery && navigator.getBattery().then(battery => battery.level < 0.2);
+    // source of video
+    const source = video.querySelector('source');
+    // if iphone and on low power mode, hide video
+    if (isIphone && isLowPowerMode) {
+      video.style.display = 'none';
+    } else if (source.getAttribute('src') !== "") {
+      // find parent element and there siblings with tag img
+      const parent = video.parentElement.parentElement;
+      const siblings = parent.querySelectorAll('img');
+
+      // hide siblings
+      siblings.forEach(sibling => {
+        sibling.style.display = 'none';
+      });
+    }
+  });
+
+      // check if device is iphone and on low power mode
+    const isIphone = /iPhone/.test(navigator.userAgent) && !window.MSStream;
+    const isLowPowerMode = navigator.getBattery && navigator.getBattery().then(battery => battery.level < 0.2);
+    // source of video
+    const source = video.querySelector('source');
+    // if iphone and on low power mode, hide video
+    if (isIphone && isLowPowerMode) {
+      video.style.display = 'none';
+    } else if (source.getAttribute('src') !== "") {
+      // find parent element and there siblings with tag img
+      const parent = video.parentElement.parentElement;
+      const siblings = parent.querySelectorAll('img');
+
+      // hide siblings
+      siblings.forEach(sibling => {
+        sibling.style.display = 'none';
+      });
+    }
+    */
 };
