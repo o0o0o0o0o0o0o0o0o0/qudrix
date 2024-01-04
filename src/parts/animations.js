@@ -49,8 +49,11 @@ export default function initializeAnimations() {
       });
 
       horizontalItems.forEach(item => {
+        const speed = 0.5 + Math.random() * 0.5;
+        const xOffset = speed * 300;
+
         gsap.to(item.querySelectorAll('.image-full'), {
-          x: 100,
+          x: () => `${xOffset}px`, // Apply the random 'x' offset
           ease: 'none',
           scrollTrigger: {
             trigger: '.horizontal-section',
@@ -63,39 +66,6 @@ export default function initializeAnimations() {
     });
   }
 
-  // ---- End of Horizontal scroll animation ----
-
-  /*
-  const stickyTriggersTitle = document.querySelectorAll('.custdetails-item__title-text.custdetails-content__trigger');
-  const stickyTriggersDescription = document.querySelectorAll('.custdetails-item__content-text-description.custdetails-content__trigger');
-  const stickyTargets = document.querySelectorAll('.custdetails-content__target');
-  const stickyLottie = document.querySelector('.custdetails-item__accets-lottie');
-  const stickyLottieWrapper = document.querySelector('.custdetails-content__main');
-
-  if(stickyLottie){
-    const animation = lottie.loadAnimation({
-      container: stickyLottie,
-      renderer: 'svg',
-      loop: true,
-      autoplay: false,
-      path: 'https://uploads-ssl.webflow.com/651fba54cf5533331be57e03/6579ccf6c0fee83aa93f5a96_qudrix_lottie_alpha.json'
-    });
-
-    ScrollTrigger.create({
-      trigger: stickyLottieWrapper,
-      start: 'top top',
-      end: 'bottom bottom',
-      pin: true,
-      pinSpacing: true,
-      onUpdate: self => {
-        const progress = self.progress * animation.totalFrames;
-        animation.goToAndStop(progress, true);
-      }
-    });
-
-  }
-  */
-
   // ---- Home page animations ----
  let typeSplit = new SplitType("[text-split], [from-bottom]", {
     types: "words, chars",
@@ -105,11 +75,11 @@ export default function initializeAnimations() {
   let counter = {
     value: 0
   };
-  let loaderDuration = 6;
+  let loaderDuration = 4;
 
   // If not a first-time visit in this tab
   if (sessionStorage.getItem("visited") !== null) {
-    loaderDuration = 3;
+    loaderDuration = 2;
     counter = {
       value: 75
     };
@@ -119,10 +89,6 @@ export default function initializeAnimations() {
   function updateLoaderText() {
     let progress = Math.round(counter.value);
     $(".loader-number").text(progress);
-  }
-
-  function endLoaderAnimation() {
-    $(".trigger").click();
   }
 
   let tl = gsap.timeline();
@@ -155,21 +121,21 @@ export default function initializeAnimations() {
 
   tl.to(".loader-number, .loader-number--percent", {
     opacity: 0,
-    delay: loaderDuration + 0.5,
+    delay: loaderDuration + 0.25,
     duration: 0.5,
     ease: ".19,1,.22,1",
   }, 0);
 
   tl.to(".loader .image-mask.mask--horizontal", {
     width: "100%",
-    delay: loaderDuration + 1, 
+    delay: loaderDuration + .5, 
     duration: 1,
     ease: ".19,1,.22,1",
   }, 0);
 
   tl.to(".loader .image-mask.mask--vertical", {
     height: "100%",
-    delay: loaderDuration + 1,
+    delay: loaderDuration + .5,
     duration: 1,
     ease: ".19,1,.22,1",
   }, 0);
@@ -177,65 +143,43 @@ export default function initializeAnimations() {
   tl.to(".loader-number__wrapper", {
     width: "0%",
     height: "0%",
-    delay: loaderDuration + 1,
+    delay: loaderDuration + .5,
     duration: 1,
     ease: ".19,1,.22,1",
   }, 0);
 
   gsap.from('.preloader-image', {
     scale: 1,
-    duration: loaderDuration + 2,
+    duration: loaderDuration + 1,
     ease: '.19,1,.22,1',
   });
 
   tl.to(".loader", {
     opacity:0, 
     display:"none",
-    delay: loaderDuration + 2, 
+    delay: loaderDuration + 1, 
     ease: ".19,1,.22,1",
   }, 0);
 
-  gsap.from('[nav-animation]', {
-    y: '100%',
-    opacity: 0,
-    delay: loaderDuration + 2, 
-    duration: 0.6,
-    stagger: 0.1,
-    ease: '.19,1,.22,1',
-  })
-
+  $("[animate]").each(function (index) {
+    gsap.from($(this).find(".char"), {
+      opacity: 0,
+      yPercent: 100, 
+      duration: 0.5, 
+      stagger: { amount: 0.5 },
+      delay: loaderDuration + 1.25, 
+      ease: '.19,1,.22,1',
+    })
+  });
 
   gsap.from('.hero-background', {
     y: '-10%',
     "-webkit-filter":'blur(8px)', 
     "filter":'blur(8px)',
     opacity: 0,
-    delay: loaderDuration + 3, 
+    delay: loaderDuration + 2, 
     duration: 0.7,
     ease: '.19,1,.22,1',
-  });
-
-
-    /*      
-  gsap.from('[animate]', {
-    opacity: 0, 
-    yPercent: 100, 
-    duration: 0.5, 
-    ease: "back.out(2)", 
-    stagger: { amount: 0.5 },
-    delay: loaderDuration + 4, 
-    ease: '.19,1,.22,1',
-  })*/
-
-  $("[animate]").each(function (index) {
-    gsap.from($(this).find(".char"), {
-      opacity: 0,
-      yPercent: 100, 
-      duration: 0.7, 
-      stagger: { amount: 0.5 },
-      delay: loaderDuration + 3.5, 
-      ease: '.19,1,.22,1',
-    })
   });
 
     // Link timelines to scroll position
@@ -265,7 +209,7 @@ export default function initializeAnimations() {
       tl.from($(this).find(".char"), {
         opacity: 0,
         yPercent: 100, 
-        duration: 0.7, 
+        duration: 0.3, 
         stagger: { amount: 0.5 },
         ease: '.19,1,.22,1',
       });

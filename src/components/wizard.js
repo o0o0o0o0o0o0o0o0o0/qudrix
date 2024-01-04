@@ -15,6 +15,23 @@ const initializeWizard = () => {
   // Creating wizardParametrs object
   const wizardParametrs = {};
 
+  // Function to handle change icon from default to active
+  const changeIcon = (element) => {
+    const wizardElementIconDefault = element.querySelector('.wizard-element__icon-default');
+    const wizardElementIconActive = element.querySelector('.wizard-element__icon-active');
+
+    wizardElementIconActive.style.display = 'block';
+    wizardElementIconDefault.style.display = 'none';
+  };
+  // Function to handle change icon from active to default
+  const changeIconBack = (element) => {
+    const wizardElementIconDefault = element.querySelector('.wizard-element__icon-default');
+    const wizardElementIconActive = element.querySelector('.wizard-element__icon-active');
+
+    wizardElementIconActive.style.display = 'none';
+    wizardElementIconDefault.style.display = 'block';
+  };
+
   // Function to handle radio list click event
   function handleRadioListClick(e) {
     const clickedElement = e.target;
@@ -27,15 +44,22 @@ const initializeWizard = () => {
         // Remove 'active' class from all labels
         labels.forEach(label => {
           label.classList.remove('active');
+          // change icon
+          changeIconBack(label);
         });
 
         // Add 'active' class to the clicked label or its parent label
         if (clickedElement.tagName === 'LABEL') {
           clickedElement.classList.add('active');
           clickedElement.querySelector('input').checked = true;
+          // change icon
+          changeIcon(clickedElement);
         } else if (clickedElement.tagName === 'INPUT') {
           clickedElement.parentElement.classList.add('active');
           clickedElement.checked = true;
+
+          // change icon
+          changeIcon(clickedElement.parentElement);
         }
       }
     }
@@ -89,17 +113,27 @@ const initializeWizard = () => {
             if (wizardParametrs[tabName][sideText]["element-name"] === dataName) {
               radio.parentElement.classList.add('active');
               radio.checked = true;
+
+              // change icon
+              changeIcon(radio.parentElement);
+
             }
           }
         } else if (wizardParametrs[tabName]) {
           if (wizardParametrs[tabName]["element-name"] === dataName) {
             radio.parentElement.classList.add('active');
             radio.checked = true;
+
+            // change icon
+            changeIcon(radio.parentElement);
           }
         } else if(tabName === 'size') {
           if (wizardParametrs[tabName]["element-name"] === dataName) {
             radio.parentElement.classList.add('active');
             radio.checked = true;
+
+            // change icon
+            changeIcon(radio.parentElement);
           }
         }
       });
