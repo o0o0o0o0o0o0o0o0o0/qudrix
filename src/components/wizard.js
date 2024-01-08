@@ -8,6 +8,11 @@ const initializeWizard = () => {
   const wizardTab = document.querySelectorAll('.wizard-tab__content-item');
   const totalPriceText = document.querySelector('#total-price');
   const wizardModelWrapper = document.querySelector('#model-wrapper');
+  const wizardAccessoriesTriggers = document.querySelectorAll('.accessories-button');
+  const wizardAccessoriesSidebar = document.querySelector('.wizard-sidebar__accessories-sidebar');
+  const wizardAccessoriesSidebarClose = document.querySelector('.wizard-sidebar__accessories-sidebar-close');
+  const wizardAccessoriesWrappers = document.querySelectorAll('.wizard-sidebar__accessories-wrapper');
+
   // Session id
   let sessionId;
   let amount = 0;
@@ -94,7 +99,6 @@ const initializeWizard = () => {
     wizardParametrs['attachment'] = {"element-name": ""};
     wizardParametrs['light'] = {"element-name": ""};
     wizardParametrs['floor'] = {"element-name": "Laminate"};
-    wizardParametrs['accessories'] = {"element-name": ""};
 
     const wizardTabContent = document.querySelectorAll('[data-tab]');
 
@@ -174,13 +178,49 @@ const initializeWizard = () => {
       }
       updateCodeElement();
       handleSession();
-    }
+    };
+
+    // function to open accessories sidebar
+    function openAccessoriesSidebar() {
+      wizardAccessoriesSidebar.classList.add('active');
+    };
+
+    // function to close accessories sidebar
+    function closeAccessoriesSidebar() {
+      wizardAccessoriesSidebar.classList.remove('active');
+      wizardAccessoriesWrappers.forEach(wrapper => {  
+        wrapper.classList.remove('active');
+      });
+    };
 
     // function to handle building sidebar with accessories for elements that have accessories
     const handleAccessories = (element) => {
-      // get accessories from element
-      
+      // get accessories data name and option from parent sibling element with class wizard-sidebar__element-button
+      const accessoriesDataName = element.parentElement.parentElement.querySelector('.wizard-sidebar__element-button').getAttribute('data-name');
+      const accessoriesOption = element.parentElement.parentElement.querySelector('.wizard-sidebar__element-button').getAttribute('data-option');
+
+      // open accessories sidebar, add go trough wizardAccessoriesWrappers and find the one with data-name and data-option
+      openAccessoriesSidebar();
+
+      wizardAccessoriesWrappers.forEach(wrapper => {
+        const wrapperDataName = wrapper.getAttribute('data-name');
+        const wrapperDataOption = wrapper.getAttribute('data-option');
+
+        if (wrapperDataName === accessoriesDataName && wrapperDataOption === accessoriesOption) {
+          wrapper.classList.add('active');
+        }
+      });
     };
+
+    // Adding click event listeners to wizardAccessoriesTriggers
+    wizardAccessoriesTriggers.forEach(trigger => {
+      trigger.addEventListener('click', (e) => {
+        handleAccessories(e.target);
+      }
+    )});
+
+    // Adding click event listeners to wizardAccessoriesSidebarClose
+    wizardAccessoriesSidebarClose.addEventListener('click', closeAccessoriesSidebar);
 
     updateCodeElement();
     // Handling init and update session
