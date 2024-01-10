@@ -326,7 +326,7 @@ export default function initializeAnimations() {
 
       // Calculate canvas size in pixels based on percentages
       var canvasWidth = parentWidth * 1; // 50% of parent width
-      var canvasHeight = parentHeight * 0.95; // 95% of parent height
+      var canvasHeight = 1280; // 95% of parent height
 
       // Set the canvas size
       canvas.width = canvasWidth;
@@ -562,4 +562,5 @@ export default function initializeAnimations() {
       });
     }
     */
+
 };
