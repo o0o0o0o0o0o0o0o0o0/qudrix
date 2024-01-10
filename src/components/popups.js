@@ -43,15 +43,18 @@ function initializePopups(){
     if(additionalClass){
     	popupElem.classList.add(additionalClass)
     }
-		popupElem.style.cssText = 'opacity: 1;';
+    if(popupElem){
+      popupElem.style.cssText = 'opacity: 1;';
+    }
     let popupContent = popupElem.querySelector('.popup-content');
-    popupContent.style.cssText = 'opacity: 1;';
+    if(popupContent){
+      popupContent.style.cssText = 'opacity: 1;';
+    }
   };
 
   if(ctaTrigger){
     setTimeout(function() {
   	  openCtaPopup(ctaTrigger);
-      console.log('popup');
 	  },10000);
   }
   

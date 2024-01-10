@@ -182,39 +182,57 @@ export default function initializeAnimations() {
     ease: '.19,1,.22,1',
   });
 
-    // Link timelines to scroll position
-    function createScrollTrigger(triggerElement, timeline) {
-      // Reset tl when scroll out of view past bottom of screen
-      ScrollTrigger.create({
-        trigger: triggerElement,
-        start: "top bottom",
-        onLeaveBack: () => {
-          timeline.progress(0);
-          timeline.pause();
-        }
-      });
-      // Play tl when scrolled into view (60% from top of screen)
-      ScrollTrigger.create({
-        trigger: triggerElement,
-        start: "top 80%",
-        onEnter: () => {
-          timeline.play();
-        }
-      });
-    }
-    
-    
-    $("[from-bottom]").each(function (index) {
-      let tl = gsap.timeline({ paused: true });
-      tl.from($(this).find(".char"), {
-        opacity: 0,
-        yPercent: 100, 
-        duration: 0.3, 
-        stagger: { amount: 0.5 },
-        ease: '.19,1,.22,1',
-      });
-      createScrollTrigger($(this), tl);
+  // Link timelines to scroll position
+  function createScrollTrigger(triggerElement, timeline) {
+    // Reset tl when scroll out of view past bottom of screen
+    ScrollTrigger.create({
+      trigger: triggerElement,
+      start: "top bottom",
+      onLeaveBack: () => {
+        timeline.progress(0);
+        timeline.pause();
+      }
     });
+    // Play tl when scrolled into view (60% from top of screen)
+    ScrollTrigger.create({
+      trigger: triggerElement,
+      start: "top 80%",
+      onEnter: () => {
+        timeline.play();
+      }
+    });
+  }
+
+  // Stagger text animations
+  $("[from-bottom]").each(function(index) {
+    let delay = $(this).attr("from-bottom");
+    
+    let tl = gsap.timeline({ paused: true });
+    tl.from($(this).find(".char"), {
+      opacity: 0,
+      yPercent: 100,
+      duration: 0.3,
+      stagger: { amount: 0.5 },
+      ease: '.19,1,.22,1',
+      delay: delay ? parseFloat(delay) : 0
+    });
+    
+    createScrollTrigger($(this), tl);
+  });
+
+  // Stagger block animations
+  $("[data-bottom]").each(function(index) {
+    let tl = gsap.timeline({ paused: true });
+    tl.from($(this).find("[data-animate]"), {
+      opacity: 0,
+      yPercent: 50,
+      duration: 0.4,
+      stagger: { amount: 0.4 },
+      ease: '.19,1,.22,1',
+    });
+    
+    createScrollTrigger($(this), tl);
+  });
     
   $(".content-full__asset").each(function(index) {
     let tl = gsap.timeline({ paused: true });
@@ -223,7 +241,7 @@ export default function initializeAnimations() {
       $(this).find(".image-mask.mask--vertical-full"),
       {
         height: "100%",
-        duration: 1,
+        duration: .8,
         ease: ".19,1,.22,1",
       }
     );
@@ -232,21 +250,21 @@ export default function initializeAnimations() {
       $(this).find(".image-mask.mask--horizontal-full"),
       {
         width: "100%",
-        duration: 1,
+        duration: .8,
         ease: ".19,1,.22,1",
       }
     );
 
     let assetImageAnimation = gsap.from($(this).find(".content-full__asset-image"), {
       scale: 1.2,
-      duration: 1,
+      duration: .8,
       ease: ".19,1,.22,1",
     });
     
     let triangleMaskAnimation = gsap.from($(this).find(".triangle-wrapper"), {
       width: "0%",
       height: "0%",
-      duration: 1,
+      duration: .8,
       ease: ".19,1,.22,1",
     });
 
@@ -320,20 +338,17 @@ export default function initializeAnimations() {
     const context = canvas.getContext("2d");
 
     function setCanvasSize() {
-      // Get the parent element's dimensions
-      var parentWidth = embed.clientWidth;
-      var parentHeight = embed.clientHeight;
-
-      // Calculate canvas size in pixels based on percentages
-      var canvasWidth = parentWidth * 1; // 50% of parent width
-      var canvasHeight = 1280; // 95% of parent height
+      // set size in 56.806vw of viewport width
+      const canvasWidth = window.innerWidth * 0.56806;
+      //set height in 91.467vh of viewport height
+      const canvasHeight = window.innerHeight * 0.91467;
 
       // Set the canvas size
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
     }
 
-    setCanvasSize();
+     // setCanvasSize();
 
     const frameCount = element.getAttribute("total-frames");
     const urlStart = element.getAttribute("url-start");
@@ -342,7 +357,7 @@ export default function initializeAnimations() {
 
     const currentFrame = (i) =>
       `${urlStart}${(i + 1).toString().padStart(floatingZeros, "0")}${urlEnd}`;
-    console.log(currentFrame(0));
+    
     const images = [];
     const imageFrames = {
       frame: 0,
@@ -370,33 +385,37 @@ export default function initializeAnimations() {
     images[0].onload = render;
 
     function render() {
-      context.clearRect(0, 0, embed.offsetWidth, embed.offsetHeight);
+      context.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
       drawImageProp(
         context,
         images[imageFrames.frame],
         0,
         0,
-        embed.offsetWidth,
-        embed.offsetHeight,
+        canvas.offsetWidth,
+        canvas.offsetHeight,
         0.5,
         0.5
       );
     }
 
-    let iOS = !!navigator.platform.match(/iPhone|iPod|iPad/);
-    let resizeTimer;
-    window.addEventListener("resize", function (e) {
-      if (iOS) {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function () {
-          setCanvasSize();
-          render();
-        }, 250);
-      } else {
+    // function to detect if the device is mobile
+    function isMobileDevice() {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    }
+
+    // function to call resize and render if the device is mobile
+    function resizeAndRender() {
+      if (isMobileDevice()) {
         setCanvasSize();
         render();
       }
-    });
+    }
+    window.addEventListener("resize", resizeAndRender);
+    window.addEventListener("load", resizeAndRender);
+    setCanvasSize();
+    render();
   });
 
   $(".customize-content__main-link").each(function (index) {
