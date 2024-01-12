@@ -89,16 +89,16 @@ const initializeWizard = () => {
 
     // default configuration
     wizardParametrs['size'] = {"element-name": "Q1"};
-    wizardParametrs['roof'] = {"element-name": "Mirror Glass"};
+    wizardParametrs['roof'] = {"element-name": "Solid Panels"};
     wizardParametrs['sides'] = {
-      'side-01': {"element-name": "Panel Wall"},
-      'side-02': {"element-name": "Panel Wall"},
-      'side-03': {"element-name": "Panel Wall"},
-      'side-04': {"element-name": "Panel Wall"},
+      'side-01': {"element-name": "Solid Panels"},
+      'side-02': {"element-name": "Solid Panels"},
+      'side-03': {"element-name": "Solid Panels"},
+      'side-04': {"element-name": "Solid Panels"},
     };
     wizardParametrs['attachment'] = {"element-name": ""};
     wizardParametrs['light'] = {"element-name": ""};
-    wizardParametrs['floor'] = {"element-name": "Laminate"};
+    wizardParametrs['floor'] = {"element-name": ""};
 
     const wizardTabContent = document.querySelectorAll('[data-tab]');
 

@@ -385,6 +385,7 @@ export default function initializeAnimations() {
     images[0].onload = render;
 
     function render() {
+      console.log()
       context.clearRect(0, 0, canvas.offsetWidth, canvas.offsetHeight);
       drawImageProp(
         context,
@@ -396,7 +397,7 @@ export default function initializeAnimations() {
         0.5,
         0.5
       );
-    }
+    };
 
     // function to detect if the device is mobile
     function isMobileDevice() {
@@ -407,15 +408,12 @@ export default function initializeAnimations() {
 
     // function to call resize and render if the device is mobile
     function resizeAndRender() {
-      if (isMobileDevice()) {
         setCanvasSize();
         render();
-      }
     }
     window.addEventListener("resize", resizeAndRender);
     window.addEventListener("load", resizeAndRender);
-    setCanvasSize();
-    render();
+    
   });
 
   $(".customize-content__main-link").each(function (index) {
