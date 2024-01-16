@@ -11,7 +11,7 @@ const initializeWizard = () => {
   const wizardAccessoriesTriggers = document.querySelectorAll('.accessories-button');
   const wizardAccessoriesSidebar = document.querySelector('.wizard-sidebar__accessories-sidebar');
   const wizardAccessoriesSidebarClose = document.querySelector('.wizard-sidebar__accessories-sidebar-close');
-  const wizardAccessoriesWrappers = document.querySelectorAll('.wizard-sidebar__accessories-wrapper');
+  const accessoriesElements = document.querySelectorAll('.wizard-sidebar__elements-list.is--accessories .wizard-sidebar__element');
 
   // Session id
   let sessionId;
@@ -40,9 +40,11 @@ const initializeWizard = () => {
   // Function to handle radio list click event
   function handleRadioListClick(e) {
     const clickedElement = e.target;
+    
     // Check if the click was on a label or an input
     if (clickedElement.tagName === 'LABEL' || clickedElement.tagName === 'INPUT') {
       const radioList = clickedElement.closest('.radio-trigger');
+      const checkboxList = clickedElement.closest('.checkbox-trigger');
       if (radioList) {
         const labels = radioList.querySelectorAll('label');
 
@@ -66,8 +68,32 @@ const initializeWizard = () => {
           // change icon
           changeIcon(clickedElement.parentElement);
         }
+      } else if (checkboxList) {
+        const labels = checkboxList.querySelectorAll('label');
+
+        // Remove 'active' class from all labels
+        labels.forEach(label => {
+          label.classList.remove('active');
+          // change icon
+          changeIconBack(label);
+        });
+
+        // Add 'active' class to the clicked label or its parent label
+        if (clickedElement.tagName === 'LABEL') {
+          clickedElement.classList.add('active');
+          clickedElement.querySelector('input').checked = true;
+
+          // change icon
+          changeIcon(clickedElement);
+        } else if (clickedElement.tagName === 'INPUT') {
+          clickedElement.parentElement.classList.add('active');
+          clickedElement.checked = true;
+
+          // change icon
+          changeIcon(clickedElement.parentElement);
+        }
       }
-    }
+    } 
   }
 
   // Adding a click event listener to the document to handle all clicks
@@ -98,9 +124,8 @@ const initializeWizard = () => {
     };
     wizardParametrs['attachment'] = {"element-name": ""};
     wizardParametrs['light'] = {"element-name": ""};
-    wizardParametrs['floor'] = {"element-name": ""};
 
-    const wizardTabContent = document.querySelectorAll('[data-tab]');
+    const wizardTabContent = document.querySelectorAll('[data-tab], .wizard-sidebar__accessories-sidebar');
 
     wizardTabContent.forEach(tab => {
       // based on default configuration, set active class to radio buttons
@@ -111,7 +136,7 @@ const initializeWizard = () => {
         const tabName = tab.getAttribute('data-tab');
         const side = radio.closest('[data-side]');
         const sideText = side ? side.dataset.side : null;
-
+        
         if (sideText) {
           if (wizardParametrs[tabName][sideText]) {
             if (wizardParametrs[tabName][sideText]["element-name"] === dataName) {
@@ -147,10 +172,12 @@ const initializeWizard = () => {
         const side = e.target.closest('[data-side]');
         const sideText = side ? side.dataset.side : null;
         const tabText = tab.dataset.tab;
+        
         if (sideText) {
           handleSideClick(tabText, sideText, e.target.parentElement);
         } else if (tabName !== 'summary') {
           handleClick(tabText, e.target.parentElement);
+          handleAccessoriesClick(tabText, e.target.parentElement);
         }
 
         // check if q2 is selected
@@ -180,6 +207,18 @@ const initializeWizard = () => {
       handleSession();
     };
 
+    function handleAccessoriesClick(tabText, target) {
+      const dataAccessory = target.getAttribute('data-accessory');
+      console.log(dataAccessory);
+      console.log(tabText);
+      console.log(target)
+      if( dataAccessory !== 'null' && dataAccessory !== null) {
+        wizardParametrs[tabText]["element-accessory"] = dataAccessory;
+      }
+      updateCodeElement();
+      handleSession();
+    };
+
     // function to open accessories sidebar
     function openAccessoriesSidebar() {
       wizardAccessoriesSidebar.classList.add('active');
@@ -188,26 +227,30 @@ const initializeWizard = () => {
     // function to close accessories sidebar
     function closeAccessoriesSidebar() {
       wizardAccessoriesSidebar.classList.remove('active');
-      wizardAccessoriesWrappers.forEach(wrapper => {  
-        wrapper.classList.remove('active');
+      accessoriesElements.forEach(element => {  
+        element.classList.remove('visible');
       });
     };
 
     // function to handle building sidebar with accessories for elements that have accessories
     const handleAccessories = (element) => {
-      // get accessories data name and option from parent sibling element with class wizard-sidebar__element-button
+      // get accessories data name and option from parent sibling element with class wizard-sidebar__element-button and remove last word variations
       const accessoriesDataName = element.parentElement.parentElement.querySelector('.wizard-sidebar__element-button').getAttribute('data-name');
-      const accessoriesOption = element.parentElement.parentElement.querySelector('.wizard-sidebar__element-button').getAttribute('data-option');
+      // get data tab from closest element with class wizard-tab__content-item
+      const accessoriesDataTab = element.closest('.wizard-tab__content-item').getAttribute('data-tab');
 
+      // add empty object to wizardParametrs with "element-accessory" to the end of obj with data tab
+      wizardParametrs[accessoriesDataTab]["element-accessory"] = {};
+      // add to sidebar attr data-tab with value of data tab
+      wizardAccessoriesSidebar.setAttribute('data-tab', accessoriesDataTab);
       // open accessories sidebar, add go trough wizardAccessoriesWrappers and find the one with data-name and data-option
       openAccessoriesSidebar();
 
-      wizardAccessoriesWrappers.forEach(wrapper => {
-        const wrapperDataName = wrapper.getAttribute('data-name');
-        const wrapperDataOption = wrapper.getAttribute('data-option');
-
-        if (wrapperDataName === accessoriesDataName && wrapperDataOption === accessoriesOption) {
-          wrapper.classList.add('active');
+      accessoriesElements.forEach(element => {
+        const elementDataName = element.getAttribute('data-accessory');
+        
+        if (elementDataName === accessoriesDataName) {
+          element.classList.add('visible');
         }
       });
     };
