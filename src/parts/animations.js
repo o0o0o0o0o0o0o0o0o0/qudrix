@@ -354,6 +354,8 @@ export default function initializeAnimations() {
     const urlStart = element.getAttribute("url-start");
     const urlEnd = element.getAttribute("url-end");
     const floatingZeros = element.getAttribute("floating-zeros");
+    const frameLoop = element.getAttribute("data-loop");
+
 
     const currentFrame = (i) =>
       `${urlStart}${(i + 1).toString().padStart(floatingZeros, "0")}${urlEnd}`;
@@ -363,24 +365,72 @@ export default function initializeAnimations() {
       frame: 0,
     };
 
-    for (let i = 0; i < frameCount; i++) {
-      const img = new Image();
-      img.src = currentFrame(i);
-      images.push(img);
-    }
+      for (let i = 0; i < frameCount; i++) {
+        const img = new Image();
+        img.src = currentFrame(i);
+        images.push(img);
+      }
+    const frameInterval = 1000 / 24; // 24 frames per second
+    let frameDirection = 1; // 1 for forward, -1 for reverse
+    let currentFrameIndex = 0;
 
-    gsap.to(imageFrames, {
-      frame: frameCount - 1,
-      snap: "frame",
-      ease: "none",
-      scrollTrigger: {
+    if(frameLoop === 'true'){
+    let intervalId;
+
+    function startAnimation() {
+      intervalId = setInterval(() => {
+        // imageFrames.frame = (imageFrames.frame + 1) % frameCount;
+        render();
+
+        // Check if it's the last frame, then loop in reverse direction
+        if (imageFrames.frame === frameCount - 1) {
+          frameDirection = -1;
+        }
+
+        // Check if it's the first frame, then loop in forward direction
+        if (imageFrames.frame === 0) {
+          frameDirection = 1;
+        }
+
+        if (frameDirection === 1) {
+          imageFrames.frame++;
+        } else {
+          imageFrames.frame--;
+        }
+
+        }, 1000 / 24); // Update frames approximately every 1/24th of a second
+      }
+
+      function stopAnimation() {
+        clearInterval(intervalId);
+      }
+
+      startAnimation();
+
+      // Stop the animation when the element is out of view
+      ScrollTrigger.create({
         trigger: element,
-        start: element.getAttribute("scroll-start"),
-        end: element.getAttribute("scroll-end"),
-        scrub: 0,
-      },
-      onUpdate: render,
-    });
+        start: "top bottom",
+        end: "bottom top",
+        onEnter: startAnimation,
+        onLeave: stopAnimation,
+        onEnterBack: startAnimation,
+        onLeaveBack: stopAnimation,
+      });
+    } else {
+      gsap.to(imageFrames, {
+        frame: frameCount - 1,
+        snap: "frame",
+        ease: "none",
+        scrollTrigger: {
+          trigger: element,
+          start: element.getAttribute("scroll-start"),
+          end: element.getAttribute("scroll-end"),
+          scrub: 0,
+        },
+        onUpdate: render,
+      });
+    }
 
     images[0].onload = render;
 
@@ -415,6 +465,23 @@ export default function initializeAnimations() {
     window.addEventListener("load", resizeAndRender);
     
   });
+
+  // get assemble-main__item elems
+  const assembleMainItems = document.querySelectorAll('.assemble-main__item');
+
+  // loop through all elems
+  assembleMainItems.forEach((item, i) => {
+    // find video inside elem, on hover play video, on mouseleave pause video
+    const video = item.querySelector('video');
+    item.addEventListener('mouseenter', () => {
+      video.play();
+    });
+    item.addEventListener('mouseleave', () => {
+      video.pause();
+    });
+  });
+
+
 
   $(".customize-content__main-link").each(function (index) {
     let triggerElement = $(this);

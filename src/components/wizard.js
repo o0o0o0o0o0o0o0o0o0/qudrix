@@ -129,15 +129,15 @@ const initializeWizard = () => {
 
     wizardTabContent.forEach(tab => {
       // based on default configuration, set active class to radio buttons
-      const radioButtons = tab.querySelectorAll('input');
+      const radioButtons = tab.querySelectorAll('input[type="radio"]');
       const tabName = tab.getAttribute('data-tab');
       radioButtons.forEach(radio => {
         const dataName = radio.parentElement.getAttribute('data-name');
         const tabName = tab.getAttribute('data-tab');
         const side = radio.closest('[data-side]');
         const sideText = side ? side.dataset.side : null;
-        
-        if (sideText) {
+
+        if (sideText !== 'null' && sideText !== null) {
           if (wizardParametrs[tabName][sideText]) {
             if (wizardParametrs[tabName][sideText]["element-name"] === dataName) {
               radio.parentElement.classList.add('active');
@@ -175,6 +175,7 @@ const initializeWizard = () => {
         
         if (sideText) {
           handleSideClick(tabText, sideText, e.target.parentElement);
+          handleAccessoriesSideClick(tabText, e.target.parentElement);
         } else if (tabName !== 'summary') {
           handleClick(tabText, e.target.parentElement);
           handleAccessoriesClick(tabText, e.target.parentElement);
@@ -209,11 +210,21 @@ const initializeWizard = () => {
 
     function handleAccessoriesClick(tabText, target) {
       const dataAccessory = target.getAttribute('data-accessory');
-      console.log(dataAccessory);
-      console.log(tabText);
-      console.log(target)
-      if( dataAccessory !== 'null' && dataAccessory !== null) {
+      const dataSide = target.parentElement.getAttribute('data-side') ? target.parentElement.getAttribute('data-side') : null;
+      
+      if( dataAccessory !== 'null' && dataAccessory !== null && dataSide === null) {
         wizardParametrs[tabText]["element-accessory"] = dataAccessory;
+        console.log('element-accessory added');
+      }
+      updateCodeElement();
+      handleSession();
+    };
+
+    function handleAccessoriesSideClick(tabText, target) {
+      const dataAccessory = target.getAttribute('data-accessory');
+      const dataSide = target.parentElement.getAttribute('data-side') ? target.parentElement.getAttribute('data-side') : null;
+      if( dataAccessory !== 'null' && dataAccessory !== null && dataSide !== 'null' && dataSide !== null) {
+        wizardParametrs[tabText][dataSide ]["element-accessory"] = dataAccessory;
       }
       updateCodeElement();
       handleSession();
@@ -236,23 +247,54 @@ const initializeWizard = () => {
     const handleAccessories = (element) => {
       // get accessories data name and option from parent sibling element with class wizard-sidebar__element-button and remove last word variations
       const accessoriesDataName = element.parentElement.parentElement.querySelector('.wizard-sidebar__element-button').getAttribute('data-name');
+      // get closest element with data-side attribute and get data-side value
+      const accessoriesDataSide = element.closest('[data-side]') ? element.closest('[data-side]').getAttribute('data-side') : null;
       // get data tab from closest element with class wizard-tab__content-item
-      const accessoriesDataTab = element.closest('.wizard-tab__content-item').getAttribute('data-tab');
-
-      // add empty object to wizardParametrs with "element-accessory" to the end of obj with data tab
-      wizardParametrs[accessoriesDataTab]["element-accessory"] = {};
+      const accessoriesDataTab = element.closest('.wizard-tab__content-item').getAttribute('data-tab'); 
       // add to sidebar attr data-tab with value of data tab
       wizardAccessoriesSidebar.setAttribute('data-tab', accessoriesDataTab);
       // open accessories sidebar, add go trough wizardAccessoriesWrappers and find the one with data-name and data-option
       openAccessoriesSidebar();
 
-      accessoriesElements.forEach(element => {
-        const elementDataName = element.getAttribute('data-accessory');
-        
-        if (elementDataName === accessoriesDataName) {
-          element.classList.add('visible');
-        }
-      });
+      if(accessoriesDataSide !== 'null' && accessoriesDataSide !== null) {
+        // go trough wizardAccessoriesWrappers and find the one with data-name and data-option
+        accessoriesElements.forEach(element => {
+          const elementDataSide = element.getAttribute('data-side');
+          if(elementDataSide === accessoriesDataSide) {
+            // add class visible to wizardAccessoriesWrapper
+            element.classList.add('visible');
+            // check if element first child is input and it has data-accessory attribute value "No accessories"
+            handleAccessoriesNoAccessories(element)
+          } else {
+            element.classList.remove('visible');
+          }
+        });
+      } else if (accessoriesDataName !== 'null' && accessoriesDataName !== null) {
+        // go trough wizardAccessoriesWrappers and find the one with data-name and data-option
+        accessoriesElements.forEach(element => {
+          const elementDataName = element.getAttribute('data-accessory');
+          if(elementDataName === accessoriesDataName) {
+            // add class visible to wizardAccessoriesWrapper
+            element.classList.add('visible');
+            handleAccessoriesNoAccessories(element)
+          } else {
+            element.classList.remove('visible');
+          }
+        });
+      }
+    };
+
+    // function to handle activate "no accessories" option
+    function handleAccessoriesNoAccessories(element) {
+      if (element.firstElementChild.getAttribute('data-accessory') === 'No accessories') {
+        // add class active to input
+        element.firstElementChild.classList.add('active');
+        // add checked attribute to input
+        element.firstElementChild.setAttribute('checked', true);
+
+        // add first order in grid to element
+        element.style.order = -1;
+      }
     };
 
     // Adding click event listeners to wizardAccessoriesTriggers
