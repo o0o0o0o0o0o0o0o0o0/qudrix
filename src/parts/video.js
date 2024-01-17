@@ -1,39 +1,48 @@
-const caseItems = document.querySelectorAll('.project-item');
+function lazyLoadVideo() {
+    let lazyVideos = [...document.querySelectorAll("video")];
+    
+    lazyVideos.forEach(item => {
+        let src = item.querySelector('source');
+        let dataSrc = src.getAttribute('data-src');
 
-function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (!dataSrc) {
+            item.parentElement.remove();
+        }
+    });
+
+    if ("IntersectionObserver" in window) {
+    let lazyVideoObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(video) {
+        if (video.isIntersecting) {
+            for (let source in video.target.children) {
+            let videoSource = video.target.children[source];
+            if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
+                videoSource.src = videoSource.dataset.src;
+            }
+            }
+            
+            // video.tareget.load only if it's not loaded
+            if (!video.target.classList.contains('loaded')) {
+                video.target.load();
+                console.log('loading')
+            }
+
+            video.target.classList.add("loaded");
+            video.target.classList.remove("lazy");
+        } else {
+            video.target.pause();
+            // check if video paused and remove loaded class
+            if (video.target.paused) {
+                console.log('paused')
+            }
+        }
+        });
+    });
+
+    lazyVideos.forEach(function(lazyVideo) {
+        lazyVideoObserver.observe(lazyVideo);
+    });
+    }
 }
 
-caseItems.forEach((caseItem, i) => {
-    const video = caseItem.querySelector('video');
-    if (video) {
-        video.pause();
-
-        if (isMobileDevice()) {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
-                    if (entry.isIntersecting) {
-                        gsap.to(video, { opacity: 1, duration: 1, onComplete: () => video.play() });
-                    } else {
-                        gsap.to(video, { opacity: 0, duration: 1, onComplete: () => {
-                            video.pause();
-                            video.currentTime = 0;
-                        } });
-                    }
-                });
-            });
-
-            observer.observe(caseItem);
-        } else {
-          // if it's not a mobile device, dont use gsap. On mouse enter play video, on mouse leave play video to the end and pause it
-          caseItem.addEventListener('mouseenter', () => {
-            video.play();
-          });
-
-          // on mouse leave play video to the end and pause it
-          caseItem.addEventListener('mouseleave', () => {
-
-          });
-        }
-    }
-});
+export default lazyLoadVideo;

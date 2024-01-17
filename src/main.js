@@ -2,6 +2,7 @@ import initializeAnimations from './parts/animations';
 import initializePopups from './components/popups';
 import initializeWizard from './components/wizard.js';
 import checkout from './components/checkout.js';
+import lazyLoadVideo from './parts/video';
 
 
 // ---- Init animations ----
@@ -9,6 +10,7 @@ import checkout from './components/checkout.js';
 if(window.location.pathname !== '/404' && window.location.pathname !== '/wizard/cube') {
   initializeAnimations();
   initializePopups();
+  lazyLoadVideo();
 } else if(window.location.pathname === '/wizard/cube' || window.location.pathname === '/checkout') {
   initializeWizard();
 
