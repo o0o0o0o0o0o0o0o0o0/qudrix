@@ -350,6 +350,9 @@ function initializeAnimations() {
   // ---- Text animation ----
   function textAnimation() {
     function createScrollTrigger(triggerElement, timeline) {
+
+      // start on enter, on desktop should be "top 90%" but on mobile it should be earler
+      const startOnEnter = window.innerWidth > 991 ? "top 90%" : "top 60%";
       // Reset tl when scroll out of view past bottom of screen
       ScrollTrigger.create({
         trigger: triggerElement,
@@ -362,7 +365,7 @@ function initializeAnimations() {
       // Play tl when scrolled into view (60% from top of screen)
       ScrollTrigger.create({
         trigger: triggerElement,
-        start: "top 90%",
+        start: startOnEnter,
         onEnter: () => {
           timeline.play();
         }
