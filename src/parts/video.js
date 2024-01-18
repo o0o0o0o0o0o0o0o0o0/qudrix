@@ -45,12 +45,17 @@ function lazyLoadVideo() {
     assembleMainItems.forEach((item, i) => {
         // find video inside elem, on hover play video, on mouseleave pause video
         const video = item.querySelector('video');
-        item.addEventListener('mouseenter', () => {
-            video.play();
-        });
-        item.addEventListener('mouseleave', () => {
-            video.pause();
-        });
+
+        if (!video) {
+            return;
+        } else {
+            item.addEventListener('mouseenter', () => {
+                video.play();
+            });
+            item.addEventListener('mouseleave', () => {
+                video.pause();
+            });
+        }
     });
 }
 
