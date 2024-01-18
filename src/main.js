@@ -7,11 +7,11 @@ import lazyLoadVideo from './parts/video';
 
 // ---- Init animations ----
 // init animation if it's not /404 url page
-if(window.location.pathname !== '/404' && window.location.pathname !== '/wizard/cube') {
+if (window.location.pathname !== '/404' && window.location.pathname !== '/wizard/cube') {
   initializeAnimations();
   initializePopups();
   lazyLoadVideo();
-} else if(window.location.pathname === '/wizard/cube' || window.location.pathname === '/checkout') {
+} else if (window.location.pathname === '/wizard/cube' || window.location.pathname === '/checkout') {
   initializeWizard();
 
   const popupElem = document.querySelector('.is--checkout-popup');
@@ -22,10 +22,10 @@ if(window.location.pathname !== '/404' && window.location.pathname !== '/wizard/
     let popupContent = popupElem.querySelector('.popup-content');
     popupContent.style.cssText = 'animation:slide-in .5s ease; animation-fill-mode: forwards;';
   };
-  
+
   const closeSidebar = (popupElem) => {
     let popupContent = popupElem.querySelector('.popup-content');
-    if(!popupContent.classList.contains('is--cta-content')){
+    if (!popupContent.classList.contains('is--cta-content')) {
       popupContent.style.cssText = 'animation:slide-out .5s ease; animation-fill-mode: forwards;';
     } else {
       popupContent.style.cssText = 'opacity: 0;';
@@ -33,7 +33,7 @@ if(window.location.pathname !== '/404' && window.location.pathname !== '/wizard/
 
     setTimeout(() => {
       popupElem.classList.remove('popup-open');
-      if(popupElem.classList.contains('is--open-mobile')){
+      if (popupElem.classList.contains('is--open-mobile')) {
         popupElem.classList.remove('is--open-mobile')
       }
     }, 500);
@@ -58,11 +58,11 @@ if(window.location.pathname !== '/404' && window.location.pathname !== '/wizard/
   const checkoutPopupClose = document.querySelectorAll('[data-sidebar="checkout-close"]');
 
   checkoutPopupClose.forEach(closer => {
-  	window.addEventListener('click', (e) => {
+    window.addEventListener('click', (e) => {
       if (e.target === closer || e.currentTarget.parentNode === closer) {
-				closeSidebar(popupElem);
+        closeSidebar(popupElem);
       }
-		});
+    });
   });
 
 }
