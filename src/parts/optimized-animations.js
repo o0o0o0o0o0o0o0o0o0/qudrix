@@ -307,7 +307,7 @@ function initializeAnimations() {
     const canvasElement = document.querySelector(".sections-wrapper");
 
     function resizeCanvas() {
-      initCanvas(canvasElement[0], 0.75, 0.75);
+      initCanvas(canvasElement, 0.75, 0.75);
     }
 
     if (canvasElement && window.innerWidth > 768) {
