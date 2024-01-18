@@ -1,4 +1,4 @@
-import { loadStripe } from '@stripe/stripe-js';
+//import { loadStripe } from '@stripe/stripe-js';
 
 const checkout = async (sessionId) => {
   const stripe = await loadStripe("pk_test_51MUELBG2BGcSuzlBbE8Y3jkJMllhaLM6RzCOnVVMtyRgrS4OJkC4KeKE5paS5jqx1okOXjl8xWqKaIvCrqztjWq400m2Qg3JWN");
@@ -12,11 +12,11 @@ const checkout = async (sessionId) => {
       method: 'GET',
       redirect: 'follow'
     });
-    
+
 
     const { clientSecret } = await response.json();
 
-    const addressOptions = { 
+    const addressOptions = {
       mode: 'shipping',
     };
 
@@ -25,7 +25,7 @@ const checkout = async (sessionId) => {
     };
 
     let elements = stripe.elements({
-      appearance, 
+      appearance,
       clientSecret
     });
 
@@ -59,35 +59,35 @@ const checkout = async (sessionId) => {
   }
 
 
-    /*
-  // Fetches the payment intent status after payment submission
-  async function checkStatus() {
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      "payment_intent_client_secret"
-    );
+  /*
+// Fetches the payment intent status after payment submission
+async function checkStatus() {
+  const clientSecret = new URLSearchParams(window.location.search).get(
+    "payment_intent_client_secret"
+  );
 
-    if (!clientSecret) {
-      return;
-    }
-
-    const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
-
-    switch (paymentIntent.status) {
-      case "succeeded":
-        showMessage("Payment succeeded!");
-        break;
-      case "processing":
-        showMessage("Your payment is processing.");
-        break;
-      case "requires_payment_method":
-        showMessage("Your payment was not successful, please try again.");
-        break;
-      default:
-        showMessage("Something went wrong.");
-        break;
-    }
+  if (!clientSecret) {
+    return;
   }
-  */
+
+  const { paymentIntent } = await stripe.retrievePaymentIntent(clientSecret);
+
+  switch (paymentIntent.status) {
+    case "succeeded":
+      showMessage("Payment succeeded!");
+      break;
+    case "processing":
+      showMessage("Your payment is processing.");
+      break;
+    case "requires_payment_method":
+      showMessage("Your payment was not successful, please try again.");
+      break;
+    default:
+      showMessage("Something went wrong.");
+      break;
+  }
+}
+*/
 };
 
 export default checkout;
