@@ -375,11 +375,11 @@ function initializeAnimations() {
     // Stagger text animations
     $("[from-bottom]").each(function (index) {
       let delay = $(this).attr("from-bottom");
-
+      const yPercent = window.innerWidth > 991 ? 100 : 50;
       let tl = gsap.timeline({ paused: true });
       tl.from($(this).find(".char"), {
         opacity: 0,
-        yPercent: 100,
+        yPercent: yPercent,
         duration: 0.3,
         stagger: { amount: 0.5 },
         ease: '.19,1,.22,1',
