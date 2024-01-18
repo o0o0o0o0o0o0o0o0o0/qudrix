@@ -352,7 +352,7 @@ function initializeAnimations() {
     function createScrollTrigger(triggerElement, timeline) {
 
       // start on enter, on desktop should be "top 90%" but on mobile it should be earler
-      const startOnEnter = window.innerWidth > 991 ? "top 90%" : "top 60%";
+      const startOnEnter = window.innerWidth > 991 ? "top 90%" : "top top";
       // Reset tl when scroll out of view past bottom of screen
       ScrollTrigger.create({
         trigger: triggerElement,
