@@ -61,6 +61,7 @@ function lazyLoadVideo() {
                 const videoObserver = new IntersectionObserver(function (entries) {
                     entries.forEach(function (video) {
                         if (video.isIntersecting) {
+                            video.target.load();
                             video.target.play();
                         } else {
                             video.target.pause();
