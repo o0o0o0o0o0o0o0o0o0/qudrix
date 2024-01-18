@@ -20,12 +20,12 @@ export default function initializeAnimations() {
   const horizontalItems = document.querySelectorAll('.horizontal-item');
   const horizontalSection = document.querySelector('.horizontal-section');
   const horizontalStickyElement = document.querySelector('.horizontal-sticky__content');
-  if(horizontalStickyElement){
-  	const height = horizontalStickyElement.offsetWidth;
+  if (horizontalStickyElement) {
+    const height = horizontalStickyElement.offsetWidth;
     const width = (horizontalItems.length - 1) * 100;
-  
+
     const updateSectionSize = () => {
-      if(window.innerWidth > 991){
+      if (window.innerWidth > 991) {
         horizontalSection.style.height = `${height / 16}rem`;
       } else {
         horizontalSection.style.height = `auto`;
@@ -33,7 +33,7 @@ export default function initializeAnimations() {
     };
     updateSectionSize()
     window.addEventListener('resize', updateSectionSize);
-    
+
     const horizontalScrollAnimation = gsap.matchMedia();
 
     horizontalScrollAnimation.add("(min-width: 991px)", () => {
@@ -67,7 +67,7 @@ export default function initializeAnimations() {
   }
 
   // ---- Home page animations ----
- let typeSplit = new SplitType("[text-split], [from-bottom]", {
+  let typeSplit = new SplitType("[text-split], [from-bottom]", {
     types: "words, chars",
     tagName: "span"
   });
@@ -75,6 +75,7 @@ export default function initializeAnimations() {
   let counter = {
     value: 0
   };
+
   let loaderDuration = 4;
 
   // If not a first-time visit in this tab
@@ -84,6 +85,7 @@ export default function initializeAnimations() {
       value: 75
     };
   }
+
   sessionStorage.setItem("visited", "true");
 
   function updateLoaderText() {
@@ -128,7 +130,7 @@ export default function initializeAnimations() {
 
   tl.to(".loader .image-mask.mask--horizontal", {
     width: "100%",
-    delay: loaderDuration + .5, 
+    delay: loaderDuration + .5,
     duration: 1,
     ease: ".19,1,.22,1",
   }, 0);
@@ -155,32 +157,34 @@ export default function initializeAnimations() {
   });
 
   tl.to(".loader", {
-    opacity:0, 
-    display:"none",
-    delay: loaderDuration + 1, 
+    opacity: 0,
+    display: "none",
+    delay: loaderDuration + 1,
     ease: ".19,1,.22,1",
   }, 0);
 
   $("[animate]").each(function (index) {
     gsap.from($(this).find(".char"), {
       opacity: 0,
-      yPercent: 100, 
-      duration: 0.5, 
+      yPercent: 100,
+      duration: 0.5,
       stagger: { amount: 0.5 },
-      delay: loaderDuration + 1.25, 
+      delay: loaderDuration + 1.25,
       ease: '.19,1,.22,1',
     })
   });
 
   gsap.from('.hero-background', {
     y: '-10%',
-    "-webkit-filter":'blur(8px)', 
-    "filter":'blur(8px)',
+    "-webkit-filter": 'blur(8px)',
+    "filter": 'blur(8px)',
     opacity: 0,
-    delay: loaderDuration + 2, 
+    delay: loaderDuration + 2,
     duration: 0.7,
     ease: '.19,1,.22,1',
   });
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
 
   // Link timelines to scroll position
   function createScrollTrigger(triggerElement, timeline) {
@@ -204,9 +208,9 @@ export default function initializeAnimations() {
   }
 
   // Stagger text animations
-  $("[from-bottom]").each(function(index) {
+  $("[from-bottom]").each(function (index) {
     let delay = $(this).attr("from-bottom");
-    
+
     let tl = gsap.timeline({ paused: true });
     tl.from($(this).find(".char"), {
       opacity: 0,
@@ -216,12 +220,12 @@ export default function initializeAnimations() {
       ease: '.19,1,.22,1',
       delay: delay ? parseFloat(delay) : 0
     });
-    
+
     createScrollTrigger($(this), tl);
   });
 
   // Stagger block animations
-  $("[data-bottom]").each(function(index) {
+  $("[data-bottom]").each(function (index) {
     let tl = gsap.timeline({ paused: true });
     tl.from($(this).find("[data-animate]"), {
       opacity: 0,
@@ -230,11 +234,11 @@ export default function initializeAnimations() {
       stagger: { amount: 0.4 },
       ease: '.19,1,.22,1',
     });
-    
+
     createScrollTrigger($(this), tl);
   });
-    
-  $(".content-full__asset").each(function(index) {
+
+  $(".content-full__asset").each(function (index) {
     let tl = gsap.timeline({ paused: true });
 
     let verticalMaskAnimation = gsap.from(
@@ -260,7 +264,7 @@ export default function initializeAnimations() {
       duration: .8,
       ease: ".19,1,.22,1",
     });
-    
+
     let triangleMaskAnimation = gsap.from($(this).find(".triangle-wrapper"), {
       width: "0%",
       height: "0%",
@@ -273,6 +277,8 @@ export default function initializeAnimations() {
 
     createScrollTrigger($(this), tl);
   });
+
+  ////////////////////////////////  HERO  /////////////////////////////////////////////////
 
   $(".hero-background").each(function (index) {
     let triggerElement = $(this);
@@ -334,7 +340,6 @@ export default function initializeAnimations() {
 
   document.querySelectorAll(".sections-wrapper").forEach((element) => {
     const canvas = element.querySelector("canvas");
-    const embed = element.querySelector(".embed");
     const context = canvas.getContext("2d");
 
     function setCanvasSize() {
@@ -348,7 +353,7 @@ export default function initializeAnimations() {
       canvas.height = canvasHeight;
     }
 
-     // setCanvasSize();
+    // setCanvasSize();
 
     const frameCount = element.getAttribute("total-frames");
     const urlStart = element.getAttribute("url-start");
@@ -357,46 +362,43 @@ export default function initializeAnimations() {
     const frameLoop = element.getAttribute("data-loop");
 
 
-    const currentFrame = (i) =>
-      `${urlStart}${(i + 1).toString().padStart(floatingZeros, "0")}${urlEnd}`;
-    
+    const currentFrame = (i) => `${urlStart}${(i + 1).toString().padStart(floatingZeros, "0")}${urlEnd}`;
+
     const images = [];
     const imageFrames = {
       frame: 0,
     };
 
-      for (let i = 0; i < frameCount; i++) {
-        const img = new Image();
-        img.src = currentFrame(i);
-        images.push(img);
-      }
-    const frameInterval = 1000 / 24; // 24 frames per second
-    let frameDirection = 1; // 1 for forward, -1 for reverse
-    let currentFrameIndex = 0;
+    for (let i = 0; i < frameCount; i++) {
+      const img = new Image();
+      img.src = currentFrame(i);
+      images.push(img);
+    }
+    const frameInterval = 1000 / 24;
+    let frameDirection = 1;
 
-    if(frameLoop === 'true'){
-    let intervalId;
+    if (frameLoop === 'true') {
+      let intervalId;
 
-    function startAnimation() {
-      intervalId = setInterval(() => {
-        // imageFrames.frame = (imageFrames.frame + 1) % frameCount;
-        render();
+      function startAnimation() {
+        intervalId = setInterval(() => {
+          render();
 
-        // Check if it's the last frame, then loop in reverse direction
-        if (imageFrames.frame === frameCount - 1) {
-          frameDirection = -1;
-        }
+          // Check if it's the last frame, then loop in reverse direction
+          if (imageFrames.frame === frameCount - 1) {
+            frameDirection = -1;
+          }
 
-        // Check if it's the first frame, then loop in forward direction
-        if (imageFrames.frame === 0) {
-          frameDirection = 1;
-        }
+          // Check if it's the first frame, then loop in forward direction
+          if (imageFrames.frame === 0) {
+            frameDirection = 1;
+          }
 
-        if (frameDirection === 1) {
-          imageFrames.frame++;
-        } else {
-          imageFrames.frame--;
-        }
+          if (frameDirection === 1) {
+            imageFrames.frame++;
+          } else {
+            imageFrames.frame--;
+          }
 
         }, 1000 / 24); // Update frames approximately every 1/24th of a second
       }
@@ -458,30 +460,13 @@ export default function initializeAnimations() {
 
     // function to call resize and render if the device is mobile
     function resizeAndRender() {
-        setCanvasSize();
-        render();
+      setCanvasSize();
+      render();
     }
     window.addEventListener("resize", resizeAndRender);
     window.addEventListener("load", resizeAndRender);
-    
+
   });
-
-  // get assemble-main__item elems
-  const assembleMainItems = document.querySelectorAll('.assemble-main__item');
-
-  // loop through all elems
-  assembleMainItems.forEach((item, i) => {
-    // find video inside elem, on hover play video, on mouseleave pause video
-    const video = item.querySelector('video');
-    item.addEventListener('mouseenter', () => {
-      video.play();
-    });
-    item.addEventListener('mouseleave', () => {
-      video.pause();
-    });
-  });
-
-
 
   $(".customize-content__main-link").each(function (index) {
     let triggerElement = $(this);

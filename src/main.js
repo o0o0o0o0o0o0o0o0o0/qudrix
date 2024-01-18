@@ -1,4 +1,4 @@
-import initializeAnimations from './parts/animations';
+import initializeAnimations from './parts/optimized-animations';
 import initializePopups from './components/popups';
 import initializeWizard from './components/wizard.js';
 import checkout from './components/checkout.js';
