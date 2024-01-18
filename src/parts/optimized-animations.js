@@ -304,7 +304,7 @@ function initializeAnimations() {
     }
 
     // get all canvas elements with class .sections-wrapper
-    const canvasElement = document.querySelectorAll(".sections-wrapper");
+    const canvasElement = document.querySelector(".sections-wrapper");
 
     function resizeCanvas() {
       initCanvas(canvasElement[0], 0.75, 0.75);
