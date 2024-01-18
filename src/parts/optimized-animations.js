@@ -498,6 +498,27 @@ function initializeAnimations() {
   // call step animation function with delay for better performance
   setTimeout(stepAnimation, 4000);
 
+  // ---- Footer animation ----
+  function footerAnimation() {
+    // when footer is in viewport, hide .cta-trigger button, and show when footer is out of viewport
+    const footer = document.querySelector('.footer');
+    const ctaTrigger = document.querySelector('.cta-trigger');
+
+    if (footer && ctaTrigger) {
+      const footerObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (footer) {
+          if (footer.isIntersecting) {
+            ctaTrigger.classList.add('is--hidden');
+          } else {
+            ctaTrigger.classList.remove('is--hidden');
+          }
+        });
+      });
+      footerObserver.observe(footer);
+    }
+  };
+
+  footerAnimation();
 }
 
 export default initializeAnimations;
