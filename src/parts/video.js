@@ -55,8 +55,24 @@ function lazyLoadVideo() {
             item.addEventListener('mouseleave', () => {
                 video.pause();
             });
+
+            // if mobile device, play video when in viewport
+            if (window.innerWidth < 991) {
+                const videoObserver = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (video) {
+                        if (video.isIntersecting) {
+                            video.target.play();
+                        } else {
+                            video.target.pause();
+                        }
+                    });
+                });
+
+                videoObserver.observe(video);
+            }
         }
     });
+
 }
 
 export default lazyLoadVideo;
