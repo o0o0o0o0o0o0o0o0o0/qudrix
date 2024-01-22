@@ -1,5 +1,6 @@
 import initSession from "../parts/initSession";
 import updateSession from "../parts/updateSession";
+import handleDropdown from "./dropdowns";
 
 const initializeWizard = () => {
   // Selecting DOM elements
@@ -12,6 +13,8 @@ const initializeWizard = () => {
   const wizardAccessoriesSidebar = document.querySelector('.wizard-sidebar__accessories-sidebar');
   const wizardAccessoriesSidebarClose = document.querySelector('.wizard-sidebar__accessories-sidebar-close');
   const accessoriesElements = document.querySelectorAll('.wizard-sidebar__elements-list.is--accessories .wizard-sidebar__element');
+
+  handleDropdown();
 
   // Session id
   let sessionId;
