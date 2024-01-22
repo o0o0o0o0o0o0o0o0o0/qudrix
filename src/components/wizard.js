@@ -40,7 +40,6 @@ const initializeWizard = () => {
   };
 
   // Function to handle radio list click event
-  // Function to handle radio list click event
   function handleRadioListClick(e) {
     const clickedElement = e.target;
 
@@ -141,7 +140,6 @@ const initializeWizard = () => {
       }
     }
   }
-
 
   // Adding a click event listener to the document to handle all clicks
   document.addEventListener('click', handleRadioListClick);
@@ -260,7 +258,11 @@ const initializeWizard = () => {
         if (accessoryTab) {
           const accessories = accessoryTab.querySelectorAll('.wizard-sidebar__element');
           accessories.forEach(accessory => {
-            reactiveAccesory(accessory);
+            let accessoryLabel = accessory.querySelector('.wizard-sidebar__element-button');
+
+            if (accessoryLabel.getAttribute('data-accessory') !== 'No accessories') {
+              reactiveAccesory(accessory);
+            }
           });
         }
       }
@@ -283,9 +285,11 @@ const initializeWizard = () => {
 
     if (dataAccessory !== 'null' && dataAccessory !== null && dataSide === null) {
       wizardParametrs[tabText]["element-accessory"] = dataAccessory;
+
+
       // add target parent to accessoriesParametrs
       accessoriesParametrs[dataTab] = target.parentElement;
-      console.log(accessoriesParametrs)
+
     }
     updateCodeElement();
     handleSession();
@@ -297,6 +301,8 @@ const initializeWizard = () => {
     const dataTab = target.closest('[data-tab]').getAttribute('data-tab');
     if (dataAccessory !== 'null' && dataAccessory !== null && dataSide !== 'null' && dataSide !== null) {
       wizardParametrs[tabText][dataSide]["element-accessory"] = dataAccessory;
+
+
       // add target parent to accessoriesParametrs
       accessoriesParametrs[dataTab][dataSide] = target.parentElement;
     }
@@ -341,18 +347,18 @@ const initializeWizard = () => {
     // open accessories sidebar, add go trough wizardAccessoriesWrappers and find the one with data-name and data-option
     openAccessoriesSidebar();
 
-    if (accessoriesDataSide !== 'null' && accessoriesDataSide !== null) {
+    if (accessoriesDataSide !== 'null' && accessoriesDataSide !== null && accessoriesDataName !== 'null' && accessoriesDataName !== null) {
       // go trough wizardAccessoriesWrappers and find the one with data-name and data-option
       accessoriesElements.forEach(element => {
         const elementDataSide = element.getAttribute('data-side');
-        if (elementDataSide === accessoriesDataSide) {
+        if (elementDataSide === accessoriesDataSide && element.getAttribute('data-accessory') === accessoriesDataName) {
           // add class visible to wizardAccessoriesWrapper
           element.classList.add('visible');
         } else {
           element.classList.remove('visible');
         }
       });
-    } else if (accessoriesDataName !== 'null' && accessoriesDataName !== null) {
+    } else if (accessoriesDataName !== 'null' && accessoriesDataName !== null && accessoriesDataSide === 'null' || accessoriesDataSide === null) {
       // go trough wizardAccessoriesWrappers and find the one with data-name and data-option
       accessoriesElements.forEach(element => {
         const elementDataName = element.getAttribute('data-accessory');
@@ -408,17 +414,16 @@ const initializeWizard = () => {
 
   // function to handle activate "no accessories" option
   function handleAccessoriesNoAccessories(element) {
-    if (element.firstElementChild.getAttribute('data-accessory') === 'No accessories') {
+    let accessoryLabel = element.querySelector('.wizard-sidebar__element-button');
+    if (element.querySelector('.wizard-sidebar__element-button').getAttribute('data-accessory') === 'No accessories') {
       // add class active to input
-      element.firstElementChild.classList.add('active');
+      accessoryLabel.classList.add('active');
       // add checked attribute to input
-      element.firstElementChild.setAttribute('checked', true);
-
+      accessoryLabel.setAttribute('checked', true);
       // add first order in grid to element
       element.style.order = -1;
-
       // change icon
-      changeIcon(element.firstElementChild);
+      changeIcon(accessoryLabel);
     }
   };
 
