@@ -1,4 +1,4 @@
-//import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 const checkout = async (sessionId) => {
   const stripe = await loadStripe("pk_test_51MUELBG2BGcSuzlBbE8Y3jkJMllhaLM6RzCOnVVMtyRgrS4OJkC4KeKE5paS5jqx1okOXjl8xWqKaIvCrqztjWq400m2Qg3JWN");
@@ -22,6 +22,66 @@ const checkout = async (sessionId) => {
 
     const appearance = {
       theme: 'flat',
+      rules: {
+        '.p-Field': {
+          position: 'relative',
+        },
+        '.Input': {
+          backgroundColor: 'transparent',
+          borderBottom: '1px solid #C4C4C4',
+          height: '3.56rem',
+          letterSpacing: '.0125rem',
+          textTransform: 'uppercase',
+          marginBottom: '0',
+          fontSize: '.625rem',
+          borderRadius: '0',
+          paddingLeft: '0',
+          paddingBottom: '0.88rem',
+          paddingTop: '0.38rem',
+          marginBottom: '1.5rem',
+        },
+        '.Input:focus': {
+          boxShadow: 'none',
+          borderColor: '#161616',
+        },
+        '.Input--invalid': {
+          borderColor: '#CC0300',
+          boxShadow: 'none',
+        },
+        '.Input:autofill': {
+          backgroundColor: 'transparent',
+        },
+        '.Error': {
+          color: '#CC0300',
+          fontSize: '.625rem',
+          letterSpacing: '.0125rem',
+          textTransform: 'uppercase',
+          marginTop: '0.25rem',
+          marginBottom: '0.25rem',
+        },
+        '.Label': {
+          fontSize: '.625rem',
+          textTransform: 'uppercase',
+          letterSpacing: '.0125rem',
+          color: '#161616',
+        },
+        '.Label--invalid': {
+          color: '#CC0300',
+        },
+        '.CheckboxInput': {
+          backgroundColor: 'transparent',
+          borderRadius: '100%',
+          border: '1px solid #161616',
+        },
+        '.CheckboxInput--checked': {
+          backgroundColor: '#161616',
+          borderRadius: '100%',
+        },
+        '.p-CheckboxInput--focused': {
+          boxShadow: 'none',
+          outline: 'none',
+        }
+      }
     };
 
     let elements = stripe.elements({
