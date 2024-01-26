@@ -25,6 +25,7 @@ const checkout = async (sessionId) => {
       rules: {
         '.p-Field': {
           position: 'relative',
+          fontFamily: 'Aeonik, sans-serif',
         },
         '.Input': {
           backgroundColor: 'transparent',

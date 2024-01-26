@@ -77,8 +77,6 @@ function initializeAnimations() {
 
   horizontalScrollAnimation();
 
-
-
   // Preloader with cookie check
   let loadingDuration = 3;
 
@@ -519,6 +517,145 @@ function initializeAnimations() {
   };
 
   footerAnimation();
+
+  // Get all checkbox elements
+  const checkboxes = document.querySelectorAll('.w-checkbox-input--inputType-custom');
+
+  function handleClassListChange(mutationsList) {
+    mutationsList.forEach(mutation => {
+      if (mutation.type === "attributes" && mutation.attributeName === "class") {
+        const targetElement = mutation.target;
+
+        if (targetElement.classList.contains("cc-error")) {
+          const parentElement = targetElement.parentElement;
+          if (parentElement) {
+            parentElement.classList.add("cc-error");
+          }
+        } else {
+          const parentElement = targetElement.parentElement;
+          if (parentElement) {
+            parentElement.classList.remove("cc-error");
+          }
+        }
+      }
+    });
+  }
+
+  checkboxes.forEach(div => {
+    const observer = new MutationObserver(handleClassListChange);
+
+    const config = { attributes: true, attributeFilter: ["class"] };
+    observer.observe(div, config);
+  });
+
+  // Button ripple
+  const Button = {
+    init: () => {
+      Button.rippleEffectMovement();
+    },
+
+    rippleEffectMovement: () => {
+      const buttonsNodeList = document.querySelectorAll(".submit-button");
+      buttonsNodeList.forEach((btn) => {
+        const rEffect = btn.querySelector('.span');
+
+        btn.addEventListener("mousemove", function (e) {
+          const buttonRect = btn.getBoundingClientRect();
+          const x = e.clientX - buttonRect.left;
+          const y = e.clientY - buttonRect.top;
+
+          rEffect.style.left = `${x}px`;
+          rEffect.style.top = `${y}px`;
+        });
+      });
+    },
+  };
+
+  Button.init();
+
+  // handling form submit
+
+  var submitButtons = document.querySelectorAll('.submit-button');
+
+  if (submitButtons.length > 0) {
+    submitButtons.forEach(function (submitButton) {
+      submitButton.addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent the default form submission
+        var parentForm = submitButton.nextElementSibling; // Find the parent form element
+
+        if (parentForm) {
+          parentForm.click(); // Submit the form
+        } else {
+          console.error('Parent form not found');
+        }
+      });
+    });
+  }
+
+  // Get all elements with the class 'nav-link'
+  const navLinks = document.querySelectorAll('.nav-link, a.is--nav');
+
+  // Function to trigger the click event of 'navbar-menu__open-button'
+  const triggerOpenButtonClick = () => {
+    const openButton = document.querySelector('.navbar-menu__open-button');
+    openButton.click();
+  };
+
+  // Add click event listener to each 'nav-link' element
+  navLinks.forEach(navLink => {
+    navLink.addEventListener('click', triggerOpenButtonClick);
+  });
+
+  // Navbar
+  const navButton = document.getElementById('nav-button');
+
+  navButton.addEventListener('click', () => {
+    checkForClass(navButton)
+  });
+
+  function checkForClass(navButton) {
+    const navButtonText = navButton.querySelector('.text-size-0-625');
+    if (!navButton.classList.contains("w--open")) {
+      document.querySelector('body').classList.add('overflow-hidden');
+      lenis.stop();
+    } else {
+      document.querySelector('body').classList.remove('overflow-hidden');
+      lenis.start();
+    }
+  }
+
+
+  const items = document.querySelectorAll('.faq-content__main-number');
+
+  items.forEach(function (item, index) {
+    const currentIndex = index + 1;
+    item.textContent = currentIndex;
+  });
+
+  const images = document.querySelectorAll('img');
+
+  images.forEach((image) => {
+    image.removeAttribute('srcset');
+  });
+  const swiper = new Swiper(".swiper", {
+    spaceBetween: 20,
+    navigation: {
+      nextEl: '.slider-button__next',
+      prevEl: '.slider-button__prev',
+    },
+  });
+
+  // get data-sidebar="slider" elems
+  const sidebarSliders = document.querySelectorAll('[data-sidebar="slider"]');
+
+  // loop through all elems
+  sidebarSliders.forEach((item, i) => {
+    // on click on item slideTo swiper slide with index i
+    item.addEventListener('click', () => {
+      swiper.slideTo(i);
+    }
+    )
+  });
 }
 
 export default initializeAnimations;

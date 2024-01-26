@@ -26,7 +26,28 @@ const initializeWizard = () => {
   const checkoutSubtotal = document.querySelector('#subtotal');
   const checkoutShipping = document.querySelector('#shipping');
   const checkoutTotal = document.querySelector('#total');
+  const wizardButtonSidebar = document.querySelector('.wizard-open__button');
+  const wizardSidebarClose = document.querySelector('.wizard-sidebar__overlay');
+  const wizardSidebar = document.querySelector('#wizard-sidebar');
 
+
+  // function to open side bar
+  const openSidebar = () => {
+    wizardSidebar.classList.add('is--open');
+  };
+
+  // function to close side bar
+  const closeSidebar = () => {
+    wizardSidebar.classList.remove('is--open');
+  };
+
+  if (wizardButtonSidebar) {
+    wizardButtonSidebar.addEventListener('click', openSidebar);
+  }
+
+  if (wizardSidebarClose) {
+    wizardSidebarClose.addEventListener('click', closeSidebar);
+  }
   // formating price
   formatingPrice();
 
@@ -251,6 +272,12 @@ const initializeWizard = () => {
         textElement.textContent = `Side 1 (${wizardParametrs[dataItem]["side-01"]["element-name"]}), Side 2 (${wizardParametrs[dataItem]["side-02"]["element-name"]}), Side 3 (${wizardParametrs[dataItem]["side-03"]["element-name"]}), Side 4 (${wizardParametrs[dataItem]["side-04"]["element-name"]})`;
       } else if (dataItem === 'color') {
         textElement.textContent = `Frame (${wizardParametrs[dataItem]["frame"] ? wizardParametrs[dataItem]["frame"] : "None"}), Roof (${wizardParametrs[dataItem]["roof"] ? wizardParametrs[dataItem]["roof"] : "None"}), Sunscreen (${wizardParametrs[dataItem]["sunscreen"] ? wizardParametrs[dataItem]["sunscreen"] : "None"}),`;
+      } else if (dataItem === 'size') {
+        if (wizardParametrs[dataItem]["element-name"] === 'Q1') {
+          textElement.textContent = '3.1 X 3.1 YD';
+        } else if (wizardParametrs[dataItem]["element-name"] === 'Q2') {
+          textElement.textContent = '4.1 X 4.1 YD';
+        }
       } else {
         textElement.textContent = wizardParametrs[dataItem] ? wizardParametrs[dataItem]["element-name"] : "None";
       }
