@@ -186,7 +186,7 @@ function initializeAnimations() {
       "-webkit-filter": 'blur(8px)',
       "filter": 'blur(8px)',
       opacity: 0,
-      delay: loadingDuration + .5,
+      delay: loadingDuration + .25,
       duration: 0.7,
       ease: '.19,1,.22,1',
     });
@@ -312,7 +312,7 @@ function initializeAnimations() {
       initCanvas(canvasElement, 0.75, 0.75);
     }
 
-    if (canvasElement && window.innerWidth > 768) {
+    if (canvasElement && window.innerWidth > 768 && window.scrollY > window.innerHeight * 4) {
       resizeCanvas();
       window.addEventListener("resize", resizeCanvas);
     }
