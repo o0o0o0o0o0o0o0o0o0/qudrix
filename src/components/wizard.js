@@ -92,9 +92,10 @@ const initializeWizard = () => {
     }
   };
 
-
-  handleDropdown();
-
+  // if page is /wizard/cube, then get wizardParametrs from local storage and update codeElement
+  if (window.location.pathname === '/wizard/cube') {
+    handleDropdown();
+  }
   // Session id
   let sessionId;
   let amount = 0;
@@ -262,6 +263,9 @@ const initializeWizard = () => {
   const updateCodeElement = () => {
     codeElement.textContent = JSON.stringify(wizardParametrs, null, 2).replace(/,/g, ',\n');
 
+    // convert wizardParametrs to json, and add or update in local storage
+    localStorage.setItem('wizardParametrs', JSON.stringify(wizardParametrs));
+
     // go trough summary items and check data-item attr
     summaryItems.forEach(item => {
       const dataItem = item.getAttribute('data-item');
@@ -283,6 +287,7 @@ const initializeWizard = () => {
       }
     });
   };
+
 
   // Creating wizardParametrs object based on wizardTabLinks
   wizardTabLinks.forEach((link, i) => {
@@ -728,40 +733,42 @@ const initializeWizard = () => {
 
   // ----------------- Handling color toggle -----------------
   // on click toggle color elements
-  colorToggle.addEventListener('click', (e) => {
-    // if colorToggle has active class, then remove it and remove active class from all color elements
-    if (e.target.classList.contains('is--active')) {
-      e.target.classList.remove('is--active');
-    } else {
-      e.target.classList.add('is--active');
-    }
+  if (colorToggle) {
+    colorToggle.addEventListener('click', (e) => {
+      // if colorToggle has active class, then remove it and remove active class from all color elements
+      if (e.target.classList.contains('is--active')) {
+        e.target.classList.remove('is--active');
+      } else {
+        e.target.classList.add('is--active');
+      }
 
-    colorElements.forEach(element => {
-      element.addEventListener('click', (e) => {
-        // get input inside
-        if (colorToggle.classList.contains('is--active')) {
-          const input = e.currentTarget.querySelector('input').value;
+      colorElements.forEach(element => {
+        element.addEventListener('click', (e) => {
+          // get input inside
+          if (colorToggle.classList.contains('is--active')) {
+            const input = e.currentTarget.querySelector('input').value;
 
-          // find all input with other value in .color-tab__content-raw.is--default and deactivate it
-          const otherInputs = document.querySelectorAll(`.color-tab__content-raw.is--default input:not([value="${input}"])`);
-          console.log(otherInputs)
-          otherInputs.forEach(input => {
-            input.parentElement.checked = false;
-            input.previousElementSibling.classList.remove('w--redirected-checked');
-          });
+            // find all input with other value in .color-tab__content-raw.is--default and deactivate it
+            const otherInputs = document.querySelectorAll(`.color-tab__content-raw.is--default input:not([value="${input}"])`);
+            console.log(otherInputs)
+            otherInputs.forEach(input => {
+              input.parentElement.checked = false;
+              input.previousElementSibling.classList.remove('w--redirected-checked');
+            });
 
 
-          // find all input with same value in .color-tab__content-raw.is--default and activate it
-          const sameInputs = document.querySelectorAll(`.color-tab__content-raw.is--default input[value="${input}"]`);
-          console.log(sameInputs)
-          sameInputs.forEach(input => {
-            input.parentElement.checked = true;
-            input.previousElementSibling.classList.add('w--redirected-checked');
-          });
-        }
+            // find all input with same value in .color-tab__content-raw.is--default and activate it
+            const sameInputs = document.querySelectorAll(`.color-tab__content-raw.is--default input[value="${input}"]`);
+            console.log(sameInputs)
+            sameInputs.forEach(input => {
+              input.parentElement.checked = true;
+              input.previousElementSibling.classList.add('w--redirected-checked');
+            });
+          }
+        });
       });
     });
-  });
+  }
 
   // function to handle first color elements
   function handleFirstColorActive() {
@@ -817,7 +824,9 @@ const initializeWizard = () => {
   }
 
   // Adding click event listeners to wizardAccessoriesSidebarClose
-  wizardAccessoriesSidebarClose.addEventListener('click', closeAccessoriesSidebar);
+  if (wizardAccessoriesSidebarClose) {
+    wizardAccessoriesSidebarClose.addEventListener('click', closeAccessoriesSidebar);
+  }
 
   updateCodeElement();
   // Handling init and update session

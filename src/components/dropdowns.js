@@ -5,11 +5,22 @@ function handleDropdown() {
   // function to open dropdown
   const openDropdown = (elem) => {
     elem.classList.add('dropdown-open');
+    // find dropdown-list and add height of content inside it
+    const dropdownList = elem.querySelector('.dropdown-list');
+
+    // get height of dropdown-list
+    const height = dropdownList.querySelector('.dropdown-list__content').scrollHeight;
+
+    // add height to dropdown-list
+    dropdownList.style.height = `${height}px`;
   };
 
   // function to close dropdown
   const closeDropdown = (elem) => {
     elem.classList.remove('dropdown-open');
+    // find dropdown-list and remove height of content inside it
+    const dropdownList = elem.querySelector('.dropdown-list');
+    dropdownList.style.height = '0px';
   };
 
   // function to toggle dropdown

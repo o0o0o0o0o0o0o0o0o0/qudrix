@@ -78,7 +78,7 @@ function initializeAnimations() {
   horizontalScrollAnimation();
 
   // Preloader with cookie check
-  let loadingDuration = 3;
+  let loadingDuration = 0;
 
   function loaderAnimation(loadingDuration) {
     let counter = {
@@ -95,8 +95,10 @@ function initializeAnimations() {
     document.cookie = "visited=true; max-age=31536000; path=/";
     // check if user has visited the site before and if so, decrease loading delay
     if (document.cookie.split(';').find(item => item.includes('visited'))) {
-      loadingDuration = 1.5;
+      loadingDuration = 0;
     }
+
+    /*
 
     gsap.to(counter, {
       value: 100,
@@ -166,13 +168,15 @@ function initializeAnimations() {
       ease: ".19,1,.22,1",
     }, 0);
 
+    */
+
     document.querySelectorAll('[animate]').forEach(function (element, index) {
       gsap.from(element.querySelectorAll('.char'), {
         opacity: 0,
         yPercent: 100,
         duration: 0.5,
         stagger: { amount: 0.5 },
-        delay: loadingDuration + 1.25,
+        delay: loadingDuration,
         ease: '.19,1,.22,1',
       });
     });
@@ -182,7 +186,7 @@ function initializeAnimations() {
       "-webkit-filter": 'blur(8px)',
       "filter": 'blur(8px)',
       opacity: 0,
-      delay: loadingDuration + 2,
+      delay: loadingDuration + .5,
       duration: 0.7,
       ease: '.19,1,.22,1',
     });

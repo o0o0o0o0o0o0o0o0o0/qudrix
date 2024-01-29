@@ -3,15 +3,16 @@ import initializePopups from './components/popups';
 import initializeWizard from './components/wizard.js';
 import checkout from './components/checkout.js';
 import lazyLoadVideo from './parts/video';
+import handleSuccess from './components/success';
 
 
 // ---- Init animations ----
 // init animation if it's not /404 url page
-if (window.location.pathname !== '/404' && window.location.pathname !== '/wizard/cube') {
+if (window.location.pathname !== '/404' && window.location.pathname !== '/wizard/cube' && window.location.pathname !== '/success') {
   initializeAnimations();
   initializePopups();
   lazyLoadVideo();
-} else if (window.location.pathname === '/wizard/cube' || window.location.pathname === '/checkout') {
+} else if (window.location.pathname === '/wizard/cube') {
   initializeWizard();
 
   const popupElem = document.querySelector('.is--checkout-popup');
@@ -65,4 +66,6 @@ if (window.location.pathname !== '/404' && window.location.pathname !== '/wizard
     });
   });
 
+} else if (window.location.pathname === '/success') {
+  handleSuccess();
 }
