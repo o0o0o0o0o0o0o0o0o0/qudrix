@@ -796,37 +796,33 @@ const initializeWizard = () => {
   handleFirstColorActive();
 
   //go trough color wrappers and add event listener on click, get data-color, add this color as key to wizardParametrs and add value of clicked element as value
-  if (colorElementsWrapper) {
-    colorElementsWrapper.forEach(wrapper => {
-      wrapper.addEventListener('click', (e) => {
-        // if colorToggle has active class, then get from all wrappers data-color
-        if (colorToggle.classList.contains('is--active')) {
-          const colors = document.querySelectorAll('.color-tab__content-raw.is--default .color-elements__list');
-          colors.forEach(color => {
-            const dataColor = color.getAttribute('data-color');
-            const input = color.querySelector('.color-radio__button.w--redirected-checked').nextElementSibling.value;
+  colorElementsWrapper.forEach(wrapper => {
+    wrapper.addEventListener('click', (e) => {
+      // if colorToggle has active class, then get from all wrappers data-color
+      if (colorToggle.classList.contains('is--active')) {
+        const colors = document.querySelectorAll('.color-tab__content-raw.is--default .color-elements__list');
+        colors.forEach(color => {
+          const dataColor = color.getAttribute('data-color');
+          const input = color.querySelector('.color-radio__button.w--redirected-checked').nextElementSibling.value;
 
-            wizardParametrs["color"][dataColor] = input;
-          });
-        } else {
-          if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
-            // get data-color from wrapper
-            const dataColor = wrapper.getAttribute('data-color');
-            // get value of clicked element if it is input, else get value of input inside
-            const value = e.target.tagName === 'INPUT' ? e.target.value : e.target.querySelector('input').value;
+          wizardParametrs["color"][dataColor] = input;
+        });
+      } else {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
+          // get data-color from wrapper
+          const dataColor = wrapper.getAttribute('data-color');
+          // get value of clicked element if it is input, else get value of input inside
+          const value = e.target.tagName === 'INPUT' ? e.target.value : e.target.querySelector('input').value;
 
-            // add to wizardParametrs
-            wizardParametrs["color"][dataColor] = value;
-          }
+          // add to wizardParametrs
+          wizardParametrs["color"][dataColor] = value;
         }
-      });
+      }
     });
-  }
+  });
 
   // Adding click event listeners to wizardAccessoriesSidebarClose
-  if (wizardAccessoriesSidebarClose) {
-    wizardAccessoriesSidebarClose.addEventListener('click', closeAccessoriesSidebar);
-  }
+  wizardAccessoriesSidebarClose.addEventListener('click', closeAccessoriesSidebar);
 
   updateCodeElement();
   // Handling init and update session
