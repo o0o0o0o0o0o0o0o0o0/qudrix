@@ -883,51 +883,51 @@ const initializeWizard = () => {
 
   handleSession();
 
-
-  // Handling update price
-  const updatePrice = (price) => {
-    // get checkoutShipping textContent and add to price
-    const shipping = checkoutShipping.textContent;
-    // remove $ from shipping
-    const shippingNumber = shipping.replace('$', '');
-    // add shipping to price
-    let shippingPrice = price + parseInt(shippingNumber);
-
-    // total price is shipping + price
-    let totalPrice = price + parseInt(shippingNumber);
-    // change total price view, if price 1500, then 1,500 etc
-    const totalPriceString = totalPrice.toString();
-    if (totalPriceString.length > 3) {
-      const totalPriceArr = totalPriceString.split('');
-      totalPriceArr.splice(totalPriceArr.length - 3, 0, ',');
-      totalPrice = totalPriceArr.join('');
-    }
-
-    // chenge the price view, if price 1500, then 1,500 etc
+  // Handling formating the price view, if price 1500, then 1,500 etc
+  function transfroPriceToString(price) {
+    // change the price to string
+    console.log(price)
     const priceString = price.toString();
+
+    // if price is more than 3 digits, then add comma
     if (priceString.length > 3) {
       const priceArr = priceString.split('');
       priceArr.splice(priceArr.length - 3, 0, ',');
       price = priceArr.join('');
     }
 
-    // chenge the shippingPrice view, if price 1500, then 1,500 etc
-    const shippingPriceString = shippingPrice.toString();
-    if (shippingPriceString.length > 3) {
-      const shippingPriceArr = shippingPriceString.split('');
-      shippingPriceArr.splice(shippingPriceArr.length - 3, 0, ',');
-      shippingPrice = shippingPriceArr.join('');
+    return price;
+  }
+
+  // Handling update price
+  const updatePrice = (price) => {
+    // const checkoutShipping = document.querySelector('#shipping');
+    // const checkoutTotal = document.querySelector('#total');
+    if (price === undefined || price === null) {
+      console.error('Price is undefined or null');
+      return;
+    } else {
+      // get shipping text and transform it to number
+      const shippingText = checkoutShipping.textContent;
+      const shipping = parseInt(shippingText.replace(/\D/g, ''));
+
+      const totalPrice = price + shipping;
+
+      // add price to amount
+      amount = price;
+      // add amout to cookies
+      document.cookie = `amount=${amount}`;
+
+      totalPriceText.textContent = '$' + transfroPriceToString(price);
+      checkoutSubtotal.textContent = '$' + transfroPriceToString(price);
+      checkoutShipping.textContent = '$' + transfroPriceToString(shipping);
+      checkoutTotal.textContent = '$' + transfroPriceToString(totalPrice);
+
+      // add price, shipping and total price to local storage
+      localStorage.setItem('price', checkoutSubtotal.textContent);
+      localStorage.setItem('shipping', checkoutShipping.textContent);
+      localStorage.setItem('totalPrice', checkoutTotal.textContent);
     }
-
-    // add price to amount
-    amount = price;
-    // add amout to cookies
-    document.cookie = `amount=${amount}`;
-
-    totalPriceText.textContent = `$${price}`
-    checkoutSubtotal.textContent = `$${price}`
-    checkoutShipping.textContent = `$${shippingPrice}`
-    checkoutTotal.textContent = `$${totalPrice}`
   };
 };
 

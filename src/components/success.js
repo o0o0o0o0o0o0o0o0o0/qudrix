@@ -24,6 +24,19 @@ function handleSuccess() {
       }
     });
   }
+
+  // get price, shipping and total price from local storage
+  const price = localStorage.getItem('price');
+  const shipping = localStorage.getItem('shipping');
+  const total = localStorage.getItem('totalPrice');
+
+  const checkoutSubtotal = document.querySelector('#subtotal');
+  const checkoutShipping = document.querySelector('#shipping');
+  const checkoutTotal = document.querySelector('#total');
+
+  checkoutSubtotal.textContent = price;
+  checkoutShipping.textContent = shipping;
+  checkoutTotal.textContent = total;
 }
 
 export default handleSuccess;
