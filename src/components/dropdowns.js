@@ -9,10 +9,11 @@ function handleDropdown() {
     const dropdownList = elem.querySelector('.dropdown-list');
 
     // get height of dropdown-list
-    const height = dropdownList.querySelector('.dropdown-list__content').scrollHeight;
+    const height = dropdownList.querySelector('.dropdown-list__content');
 
     // add height to dropdown-list
-    dropdownList.style.height = `${height}px`;
+    dropdownList.style.height = `${height.offsetHeight}px`;
+    console.log(height);
   };
 
   // function to close dropdown
@@ -32,8 +33,7 @@ function handleDropdown() {
     }
   };
 
-  // first dropdown is open by default
-  openDropdown(dropdown[0]);
+
 
   // loop through all dropdowns
   dropdown.forEach((elem, i) => {
@@ -47,6 +47,9 @@ function handleDropdown() {
       toggleDropdown(elem);
     });
   });
+
+  // first dropdown is open by default
+  openDropdown(dropdown[0]);
 }
 
 export default handleDropdown;
