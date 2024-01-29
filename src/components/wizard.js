@@ -35,7 +35,7 @@ const initializeWizard = () => {
   const openSidebar = () => {
     wizardSidebar.classList.add('is--open');
 
-    setTimeout(() => { wizardSidebar.style.display = "block" }, 500);
+    wizardSidebar.style.display = "block"
   };
 
   // function to close side bar
@@ -538,9 +538,6 @@ const initializeWizard = () => {
     const accessoriesDataName = element.parentElement.parentElement.querySelector('.wizard-sidebar__element-button').getAttribute('data-name');
     const accessoriesDataSide = element.closest('[data-side]') ? element.closest('[data-side]').getAttribute('data-side') : null;
     const accessoriesDataTab = element.closest('.wizard-tab__content-item').getAttribute('data-tab');
-
-
-    console.log(accessoriesDataName);
     // add to sidebar attr data-tab with value of data tab
     wizardAccessoriesSidebar.setAttribute('data-tab', accessoriesDataTab);
     // open accessories sidebar, add go trough wizardAccessoriesWrappers and find the one with data-name and data-option
