@@ -48,8 +48,10 @@ function handleDropdown() {
     });
   });
 
-  // first dropdown is open by default
-  openDropdown(dropdown[0]);
+  // on page load open first dropdown
+  window.addEventListener('DOMContentLoaded', () => {
+    openDropdown(dropdown[0]);
+  });
 }
 
 export default handleDropdown;

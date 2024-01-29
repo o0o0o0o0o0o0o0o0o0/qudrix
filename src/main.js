@@ -6,8 +6,9 @@ import lazyLoadVideo from './parts/video';
 import handleSuccess from './components/success';
 
 
-// ---- Init animations ----
-// init animation if it's not /404 url page
+
+// call on dom loaded
+
 if (window.location.pathname !== '/404' && window.location.pathname !== '/wizard/cube' && window.location.pathname !== '/success') {
   initializeAnimations();
   initializePopups();
@@ -65,7 +66,7 @@ if (window.location.pathname !== '/404' && window.location.pathname !== '/wizard
       }
     });
   });
-
 } else if (window.location.pathname === '/success') {
   handleSuccess();
 }
+
