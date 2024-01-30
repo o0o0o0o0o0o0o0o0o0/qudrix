@@ -10,7 +10,7 @@ function handleSuccess() {
       const textElement = item.querySelector('.text-color-gray');
 
       if (dataItem === 'sides') {
-        textElement.textContent = `Side 1 (${wizardParametrsFromLocalStorage[dataItem]["side-01"]["element-name"]}), Side 2 (${wizardParametrsFromLocalStorage[dataItem]["side-02"]["element-name"]}), Side 3 (${wizardParametrsFromLocalStorage[dataItem]["side-03"]["element-name"]}), Side 4 (${wizardParametrsFromLocalStorage[dataItem]["side-04"]["element-name"]})`;
+        textElement.textContent = `S1 (${wizardParametrsFromLocalStorage[dataItem]["side-01"]["element-name"]}), S2 (${wizardParametrsFromLocalStorage[dataItem]["side-02"]["element-name"]}), S3 (${wizardParametrsFromLocalStorage[dataItem]["side-03"]["element-name"]}), S4 (${wizardParametrsFromLocalStorage[dataItem]["side-04"]["element-name"]})`;
       } else if (dataItem === 'color') {
         textElement.textContent = `Frame (${wizardParametrsFromLocalStorage[dataItem]["frame"] ? wizardParametrsFromLocalStorage[dataItem]["frame"] : "None"}), Roof (${wizardParametrsFromLocalStorage[dataItem]["roof"] ? wizardParametrsFromLocalStorage[dataItem]["roof"] : "None"}), Sunscreen (${wizardParametrsFromLocalStorage[dataItem]["sunscreen"] ? wizardParametrsFromLocalStorage[dataItem]["sunscreen"] : "None"}),`;
       } else if (dataItem === 'size') {

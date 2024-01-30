@@ -277,7 +277,7 @@ const initializeWizard = () => {
       const textElement = item.querySelector('.text-color-gray');
 
       if (dataItem === 'sides') {
-        textElement.textContent = `Side 1 (${wizardParametrs[dataItem]["side-01"]["element-name"]}), Side 2 (${wizardParametrs[dataItem]["side-02"]["element-name"]}), Side 3 (${wizardParametrs[dataItem]["side-03"]["element-name"]}), Side 4 (${wizardParametrs[dataItem]["side-04"]["element-name"]})`;
+        textElement.textContent = `S1 (${wizardParametrs[dataItem]["side-01"]["element-name"]}), S2 (${wizardParametrs[dataItem]["side-02"]["element-name"]}), S3 (${wizardParametrs[dataItem]["side-03"]["element-name"]}), S4 (${wizardParametrs[dataItem]["side-04"]["element-name"]})`;
       } else if (dataItem === 'color') {
         textElement.textContent = `Frame (${wizardParametrs[dataItem]["frame"] ? wizardParametrs[dataItem]["frame"] : "None"}), Roof (${wizardParametrs[dataItem]["roof"] ? wizardParametrs[dataItem]["roof"] : "None"}), Sunscreen (${wizardParametrs[dataItem]["sunscreen"] ? wizardParametrs[dataItem]["sunscreen"] : "None"}),`;
       } else if (dataItem === 'size') {
