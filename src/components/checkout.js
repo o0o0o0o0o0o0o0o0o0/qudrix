@@ -81,7 +81,13 @@ const checkout = async (sessionId) => {
         '.p-CheckboxInput--focused': {
           boxShadow: 'none',
           outline: 'none',
-        }
+        },
+        '.CheckboxLabel': {
+          fontSize: '.625rem',
+          textTransform: 'uppercase',
+          letterSpacing: '.0125rem',
+          color: '#161616',
+        },
       }
     };
 

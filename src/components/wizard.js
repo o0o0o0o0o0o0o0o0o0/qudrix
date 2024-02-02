@@ -34,15 +34,11 @@ const initializeWizard = () => {
   // function to open side bar
   const openSidebar = () => {
     wizardSidebar.classList.add('is--open');
-
-    wizardSidebar.style.display = "block"
   };
 
   // function to close side bar
   const closeSidebar = () => {
     wizardSidebar.classList.remove('is--open');
-
-    setTimeout(() => { wizardSidebar.style.display = "none" }, 500);
   };
 
   if (wizardButtonSidebar) {
@@ -50,7 +46,9 @@ const initializeWizard = () => {
   }
 
   if (wizardSidebarClose) {
-    wizardSidebarClose.addEventListener('click', closeSidebar);
+    wizardSidebarClose.addEventListener('click', () => {
+      closeSidebar()
+    });
   }
   // formating price
   formatingPrice();
@@ -303,7 +301,7 @@ const initializeWizard = () => {
   });
 
   // default configuration
-  wizardParametrs['size'] = { "element-name": "Q1" };
+  wizardParametrs['size'] = { "element-name": "Q01" };
   wizardParametrs['roof'] = { "element-name": "Solid Panels" };
   wizardParametrs['sides'] = {
     'side-01': { "element-name": "Solid Panels" },
@@ -311,8 +309,8 @@ const initializeWizard = () => {
     'side-03': { "element-name": "Solid Panels" },
     'side-04': { "element-name": "Solid Panels" },
   };
-  wizardParametrs['attachment'] = { "element-name": "" };
-  wizardParametrs['light'] = { "element-name": "" };
+  wizardParametrs['attachment'] = { "element-name": "None" };
+  wizardParametrs['light'] = { "element-name": "None" };
 
   const wizardTabContent = document.querySelectorAll('[data-tab], .wizard-sidebar__accessories-sidebar');
 

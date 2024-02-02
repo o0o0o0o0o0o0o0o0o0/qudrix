@@ -7,8 +7,6 @@ import handleSuccess from './components/success';
 
 
 
-// call on dom loaded
-
 if (window.location.pathname !== '/404' && window.location.pathname !== '/wizard/cube' && window.location.pathname !== '/success') {
   initializeAnimations();
   initializePopups();
