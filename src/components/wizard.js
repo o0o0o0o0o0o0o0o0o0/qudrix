@@ -302,12 +302,12 @@ const initializeWizard = () => {
 
   // default configuration
   wizardParametrs['size'] = { "element-name": "Q01" };
-  wizardParametrs['roof'] = { "element-name": "Solid Panels" };
+  wizardParametrs['roof'] = { "element-name": "Solid Panels", "accessory1-name": "None" };
   wizardParametrs['sides'] = {
-    'side-01': { "element-name": "Slider Door" },
-    'side-02': { "element-name": "Glass Window" },
-    'side-03': { "element-name": "Solid Panels" },
-    'side-04': { "element-name": "Solid Panels" },
+    'side-01': { "element-name": "Slider Door", "accessory1-name": "None", "accessory2-name": "None" },
+    'side-02': { "element-name": "Glass Window", "accessory1-name": "None", "accessory2-name": "None" },
+    'side-03': { "element-name": "Solid Panels", "accessory1-name": "None", "accessory2-name": "None" },
+    'side-04': { "element-name": "Solid Panels", "accessory1-name": "None", "accessory2-name": "None" },
   };
   wizardParametrs['attachment'] = { "element-name": "" };
   wizardParametrs['light'] = { "element-name": "" };
