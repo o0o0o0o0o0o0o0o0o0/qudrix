@@ -311,6 +311,7 @@ const initializeWizard = () => {
   };
   wizardParametrs['attachment'] = { "element-name": "" };
   wizardParametrs['light'] = { "element-name": "" };
+  wizardParametrs['color'] = { "frame": "Black" };
 
   const wizardTabContent = document.querySelectorAll('[data-tab], .wizard-sidebar__accessories-sidebar');
 
