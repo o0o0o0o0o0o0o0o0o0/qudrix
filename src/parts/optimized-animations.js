@@ -77,98 +77,8 @@ function initializeAnimations() {
 
   horizontalScrollAnimation();
 
-  // Preloader with cookie check
-  let loadingDuration = 0;
 
   function loaderAnimation(loadingDuration) {
-    let counter = {
-      value: 0
-    };
-
-
-    function updateLoaderText() {
-      let progress = Math.round(counter.value);
-      $(".loader-number").text(progress);
-    }
-
-    // add line to cookies when user has visited the site, so we can check it later
-    document.cookie = "visited=true; max-age=31536000; path=/";
-    // check if user has visited the site before and if so, decrease loading delay
-    if (document.cookie.split(';').find(item => item.includes('visited'))) {
-      loadingDuration = 0;
-    }
-
-    /*
-
-    gsap.to(counter, {
-      value: 100,
-      onUpdate: updateLoaderText,
-      duration: loadingDuration,
-      ease: ".19,1,.22,1",
-    });
-
-    gsap.to(".loader .image-mask.mask--horizontal", {
-      width: "calc(0% + 24px)",
-      duration: loadingDuration,
-      ease: ".19,1,.22,1",
-    });
-
-    gsap.to(".loader .image-mask.mask--vertical", {
-      height: "calc(0% + 24px)",
-      duration: loadingDuration,
-      ease: ".19,1,.22,1",
-    });
-
-    gsap.to(".loader-number__wrapper", {
-      width: "calc(100% - 24px)",
-      height: "calc(100% - 24px)",
-      duration: loadingDuration,
-      ease: ".19,1,.22,1",
-    });
-
-    gsap.to(".loader-number, .loader-number--percent", {
-      opacity: 0,
-      delay: loadingDuration + 0.10,
-      duration: 0.5,
-      ease: ".19,1,.22,1",
-    });
-
-    gsap.to(".loader .image-mask.mask--horizontal", {
-      width: "100%",
-      delay: loadingDuration + .15,
-      duration: 1,
-      ease: ".19,1,.22,1",
-    }, 0);
-
-    gsap.to(".loader .image-mask.mask--vertical", {
-      height: "100%",
-      delay: loadingDuration + .15,
-      duration: 1,
-      ease: ".19,1,.22,1",
-    }, 0);
-
-    gsap.to(".loader-number__wrapper", {
-      width: "0%",
-      height: "0%",
-      delay: loadingDuration + .15,
-      duration: 1,
-      ease: ".19,1,.22,1",
-    }, 0);
-
-    gsap.from('.preloader-image', {
-      scale: 1,
-      duration: loadingDuration + 0.3,
-      ease: '.19,1,.22,1',
-    });
-
-    gsap.to(".loader", {
-      opacity: 0,
-      display: "none",
-      delay: loadingDuration + .7,
-      ease: ".19,1,.22,1",
-    }, 0);
-
-    */
 
     document.querySelectorAll('[animate]').forEach(function (element, index) {
       gsap.from(element.querySelectorAll('.char'), {
@@ -192,7 +102,7 @@ function initializeAnimations() {
     });
   }
 
-  loaderAnimation(loadingDuration);
+  loaderAnimation(2.4);
 
   // ---- Canvas animation ----
 
@@ -396,7 +306,7 @@ function initializeAnimations() {
       tl.from($(this).find("[data-animate]"), {
         opacity: 0,
         yPercent: 50,
-        duration: 0.4,
+        duration: 0.5,
         stagger: { amount: 0.4 },
         ease: '.19,1,.22,1',
       });
@@ -484,6 +394,7 @@ function initializeAnimations() {
           onEnter: () => {
             if (!triggered) {
               triggered = true;
+              console.log('triggered');
               removeActiveStep();
               applySequentially(stepElements, addActiveStep);
             }
@@ -498,7 +409,7 @@ function initializeAnimations() {
   }
 
   // call step animation function with delay for better performance
-  setTimeout(stepAnimation, 4000);
+  setTimeout(stepAnimation, 2000);
 
   // ---- Footer animation ----
   function footerAnimation() {

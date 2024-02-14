@@ -304,13 +304,13 @@ const initializeWizard = () => {
   wizardParametrs['size'] = { "element-name": "Q01" };
   wizardParametrs['roof'] = { "element-name": "Solid Panels" };
   wizardParametrs['sides'] = {
-    'side-01': { "element-name": "Solid Panels" },
-    'side-02': { "element-name": "Solid Panels" },
+    'side-01': { "element-name": "Slider Door" },
+    'side-02': { "element-name": "Glass Window" },
     'side-03': { "element-name": "Solid Panels" },
     'side-04': { "element-name": "Solid Panels" },
   };
-  wizardParametrs['attachment'] = { "element-name": "" };
-  wizardParametrs['light'] = { "element-name": "" };
+  wizardParametrs['attachment'] = { "element-name": "None" };
+  wizardParametrs['light'] = { "element-name": "None" };
 
   const wizardTabContent = document.querySelectorAll('[data-tab], .wizard-sidebar__accessories-sidebar');
 
@@ -625,6 +625,10 @@ const initializeWizard = () => {
       element.style.order = -1;
       // change icon
       changeIcon(accessoryLabel);
+
+      // update price
+      updateCodeElement();
+      handleSession();
     }
   };
 
