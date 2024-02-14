@@ -309,8 +309,8 @@ const initializeWizard = () => {
     'side-03': { "element-name": "Solid Panels" },
     'side-04': { "element-name": "Solid Panels" },
   };
-  wizardParametrs['attachment'] = { "element-name": "None" };
-  wizardParametrs['light'] = { "element-name": "None" };
+  wizardParametrs['attachment'] = { "element-name": "" };
+  wizardParametrs['light'] = { "element-name": "" };
 
   const wizardTabContent = document.querySelectorAll('[data-tab], .wizard-sidebar__accessories-sidebar');
 
