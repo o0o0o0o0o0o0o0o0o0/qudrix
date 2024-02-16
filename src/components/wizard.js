@@ -851,6 +851,7 @@ const initializeWizard = () => {
               input.previousElementSibling.classList.add('w--redirected-checked');
             });
           }
+
         });
       });
     });
@@ -904,6 +905,11 @@ const initializeWizard = () => {
           wizardParametrs["color"][dataColor] = value;
         }
       }
+
+      // update code element
+      updateCodeElement();
+      // update session
+      handleSession();
     });
   });
 
