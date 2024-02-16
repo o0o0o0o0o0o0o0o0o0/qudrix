@@ -429,11 +429,11 @@ const initializeWizard = () => {
             delete wizardParametrs[tabText][`accessory1-name`];
           }
           */
-          wizardParametrs[tabText][`accessory${index}-name`] = dataAccessory;
+          wizardParametrs[tabText][`accessory1-name`] = dataAccessory;
         }
       } else {
         // remove current accessory from wizardParametrs
-        wizardParametrs[tabText][`accessory${index}-name`] = "None";
+        wizardParametrs[tabText][`accessory1-name`] = "None";
 
         // check if there is no active accessory, then add No accessories to the wizardParametrs as None
         const accessories = target.parentElement.parentElement.querySelectorAll('.wizard-sidebar__element.visible');
