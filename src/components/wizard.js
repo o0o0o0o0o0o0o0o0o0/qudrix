@@ -240,7 +240,7 @@ const initializeWizard = () => {
       }
       // check if 
       handleAccessoriesInactiveElements()
-      checkIfShowcolors();
+      //checkIfShowcolors();
 
       // get side of clicked element if not null that is not null
       const side = clickedElement.closest('[data-side]');
@@ -318,7 +318,7 @@ const initializeWizard = () => {
         });
       }
       handleAccessoriesInactiveElements()
-      checkIfShowcolors();
+      //checkIfShowcolors();
     }
   }
 
