@@ -382,9 +382,8 @@ const initializeWizard = () => {
     const dataName = target.getAttribute('data-name');
     if (sideText !== 'null' && sideText !== null && dataName !== 'null' && dataName !== null) {
       wizardParametrs[tabText][sideText]["element-name"] = dataName;
-      if (wizardParametrs[tabText][sideText]["accessory1-name"]) {
+      if (wizardParametrs[tabText][sideText]["accessory1-name"] && wizardParametrs[tabText][sideText]["accessory2-name"]) {
         wizardParametrs[tabText][sideText]["accessory1-name"] = "None";
-      } else if (wizardParametrs[tabText][sideText]["accessory2-name"]) {
         wizardParametrs[tabText][sideText]["accessory2-name"] = "None";
       }
     }
