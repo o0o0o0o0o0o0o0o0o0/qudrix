@@ -386,9 +386,9 @@ const initializeWizard = () => {
         wizardParametrs[tabText][sideText]["accessory1-name"] = "None";
         wizardParametrs[tabText][sideText]["accessory2-name"] = "None";
       }
+      updateCodeElement();
+      handleSession();
     }
-    updateCodeElement();
-    handleSession();
   }
 
   function reactiveAccesory(accessory) {
@@ -405,9 +405,9 @@ const initializeWizard = () => {
       if (wizardParametrs[tabText]["accessory1-name"]) {
         wizardParametrs[tabText]["accessory1-name"] = "None";
       }
+      updateCodeElement();
+      handleSession();
     }
-    updateCodeElement();
-    handleSession();
   };
 
 
