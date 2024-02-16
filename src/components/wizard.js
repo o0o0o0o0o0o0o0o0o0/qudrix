@@ -381,7 +381,7 @@ const initializeWizard = () => {
   function handleSideClick(tabText, sideText, target) {
     const dataName = target.getAttribute('data-name');
     if (sideText !== 'null' && sideText !== null && dataName !== 'null' && dataName !== null) {
-      wizardParametrs[tabText][sideText] = { "element-name": dataName };
+      wizardParametrs[tabText][sideText]["element-name"] = dataName;
     }
     updateCodeElement();
     handleSession();
@@ -397,7 +397,7 @@ const initializeWizard = () => {
     const dataName = target.getAttribute('data-name');
     const dataTab = target.closest('[data-tab]').getAttribute('data-tab');
     if (dataName !== 'null' && dataName !== null) {
-      wizardParametrs[tabText] = { "element-name": dataName };
+      wizardParametrs[tabText]["element-name"] = dataName;
     }
     updateCodeElement();
     handleSession();
@@ -427,7 +427,7 @@ const initializeWizard = () => {
         }
       } else {
         // remove current accessory from wizardParametrs
-        delete wizardParametrs[tabText][`accessory${index}-name`];
+        // delete wizardParametrs[tabText][`accessory${index}-name`];
 
         // check if there is no active accessory, then add No accessories to the wizardParametrs as None
         const accessories = target.parentElement.parentElement.querySelectorAll('.wizard-sidebar__element.visible');
