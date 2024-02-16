@@ -431,6 +431,8 @@ const initializeWizard = () => {
           */
           wizardParametrs[tabText][`accessory1-name`] = dataAccessory;
         }
+        updateCodeElement();
+        handleSession();
       } else {
         // remove current accessory from wizardParametrs
         wizardParametrs[tabText][`accessory1-name`] = "None";
@@ -449,12 +451,13 @@ const initializeWizard = () => {
           // add None to wizardParametrs
           wizardParametrs[tabText][`accessory1-name`] = 'None';
         }
+        updateCodeElement();
+        handleSession();
       }
       // add target parent to accessoriesParametrs
       accessoriesParametrs[dataTab] = target.parentElement;
     }
-    updateCodeElement();
-    handleSession();
+
   };
 
   function handleAccessoriesSideClick(tabText, target) {
@@ -499,9 +502,9 @@ const initializeWizard = () => {
       }
       // add target parent to accessoriesParametrs
       accessoriesParametrs[dataTab][dataSide] = target.parentElement;
+      updateCodeElement();
+      handleSession();
     }
-    updateCodeElement();
-    handleSession();
   };
 
   // function to check if clicked element have accessory trigger
@@ -840,7 +843,7 @@ const initializeWizard = () => {
 
   // Adding click event listeners to wizardAccessoriesSidebarClose
   wizardAccessoriesSidebarClose.addEventListener('click', closeAccessoriesSidebar);
-
+  let updCounter = 0;
   updateCodeElement();
   // Handling init and update session
   function handleSession() {
