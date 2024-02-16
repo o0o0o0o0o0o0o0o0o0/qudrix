@@ -382,6 +382,11 @@ const initializeWizard = () => {
     const dataName = target.getAttribute('data-name');
     if (sideText !== 'null' && sideText !== null && dataName !== 'null' && dataName !== null) {
       wizardParametrs[tabText][sideText]["element-name"] = dataName;
+      if (wizardParametrs[tabText][sideText]["accessory1-name"]) {
+        wizardParametrs[tabText][sideText]["accessory1-name"] = "None";
+      } else if (wizardParametrs[tabText][sideText]["accessory2-name"]) {
+        wizardParametrs[tabText][sideText]["accessory2-name"] = "None";
+      }
     }
     updateCodeElement();
     handleSession();
@@ -398,6 +403,9 @@ const initializeWizard = () => {
     const dataTab = target.closest('[data-tab]').getAttribute('data-tab');
     if (dataName !== 'null' && dataName !== null) {
       wizardParametrs[tabText]["element-name"] = dataName;
+      if (wizardParametrs[tabText]["accessory1-name"]) {
+        wizardParametrs[tabText]["accessory1-name"] = "None";
+      }
     }
     updateCodeElement();
     handleSession();
@@ -414,20 +422,19 @@ const initializeWizard = () => {
     if (dataAccessory !== 'null' && dataAccessory !== null && dataSide === null) {
       if (!target.classList.contains('active')) {
         if (dataAccessory === 'No accessories') {
-          for (let i = 0; i < 6; i++) {
-            delete wizardParametrs[tabText][`accessory0${i}-name`];
-          }
           wizardParametrs[tabText][`accessory1-name`] = 'None';
         } else {
           // remove None from wizardParametrs[tabText][`accessory0-name`]
+          /*
           if (wizardParametrs[tabText][`accessory1-name`] === 'None') {
             delete wizardParametrs[tabText][`accessory1-name`];
           }
+          */
           wizardParametrs[tabText][`accessory${index}-name`] = dataAccessory;
         }
       } else {
         // remove current accessory from wizardParametrs
-        // delete wizardParametrs[tabText][`accessory${index}-name`];
+        wizardParametrs[tabText][`accessory${index}-name`] = "None";
 
         // check if there is no active accessory, then add No accessories to the wizardParametrs as None
         const accessories = target.parentElement.parentElement.querySelectorAll('.wizard-sidebar__element.visible');
@@ -462,20 +469,19 @@ const initializeWizard = () => {
 
       if (!target.classList.contains('active')) {
         if (dataAccessory === 'No accessories') {
-          for (let i = 0; i < 6; i++) {
-            delete wizardParametrs[tabText][dataSide][`accessory${i}-name`];
+          for (let i = 1; i < 3; i++) {
+            wizardParametrs[tabText][dataSide][`accessory${i}-name`] = 'None';
           }
-          wizardParametrs[tabText][dataSide][`accessory1-name`] = 'None';
         } else {
           // remove None from wizardParametrs[tabText][`accessory0-name`]
           if (wizardParametrs[tabText][dataSide][`accessory1-name`] === 'None') {
-            delete wizardParametrs[tabText][dataSide][`accessory1-name`];
+            wizardParametrs[tabText][dataSide][`accessory1-name`] = 'None';
           }
           wizardParametrs[tabText][dataSide][`accessory${index}-name`] = dataAccessory;
         }
       } else {
         // remove current accessory from wizardParametrs
-        delete wizardParametrs[tabText][dataSide][`accessory${index}-name`];
+        wizardParametrs[tabText][dataSide][`accessory${index}-name`] = "None";
 
         // check if there is no active accessory, then add No accessories to the wizardParametrs as None
         const accessories = target.parentElement.parentElement.querySelectorAll('.wizard-sidebar__element.visible');
