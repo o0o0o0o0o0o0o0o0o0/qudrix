@@ -264,7 +264,7 @@ const initializeWizard = () => {
   // Function to update codeElement content based on wizardParametrs object
   const updateCodeElement = () => {
     codeElement.textContent = JSON.stringify(wizardParametrs, null, 2).replace(/,/g, ',\n');
-
+    console.log(codeElement.textContent)
     // convert wizardParametrs to json, and add or update in local storage
     localStorage.setItem('wizardParametrs', JSON.stringify(wizardParametrs));
 
@@ -889,7 +889,6 @@ const initializeWizard = () => {
   // Handling formating the price view, if price 1500, then 1,500 etc
   function transfroPriceToString(price) {
     // change the price to string
-    console.log(price)
     const priceString = price.toString();
 
     // if price is more than 3 digits, then add comma
