@@ -13,7 +13,6 @@ function handleDropdown() {
 
     // add height to dropdown-list
     dropdownList.style.height = `${height.offsetHeight}px`;
-    console.log(height);
   };
 
   // function to close dropdown

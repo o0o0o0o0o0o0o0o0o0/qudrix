@@ -29,6 +29,8 @@ const initializeWizard = () => {
   const wizardButtonSidebar = document.querySelector('.wizard-open__button');
   const wizardSidebarClose = document.querySelector('.wizard-sidebar__overlay');
   const wizardSidebar = document.querySelector('#wizard-sidebar');
+  const paidGlasses = document.querySelectorAll('[data-name="Glass Window Paid"]');
+  const freeGlasses = document.querySelectorAll('[data-name="Glass Window"]')
 
 
   // function to open side bar
@@ -127,6 +129,60 @@ const initializeWizard = () => {
     }
   };
 
+  // function to hide all paid glass
+  function hideGlass(glass) {
+    glass.parentElement.style.display = 'none';
+  }
+
+  if (paidGlasses.length > 0) {
+    paidGlasses.forEach(glass => {
+      hideGlass(glass);
+    });
+  }
+
+  // function to check if one of the free glasses is active, if yes, then show paid glasses on other sides and hide free glasses
+  function checkIfShowPaidGlass() {
+    let activeGlass = false;
+    for (let i = 0; i < freeGlasses.length; i++) {
+      activeGlass = checkIfHasActiveClass(freeGlasses[i]);
+      if (activeGlass) {
+        break;
+      }
+    }
+
+    if (activeGlass) {
+      let activeGlassSide;
+      freeGlasses.forEach(glass => {
+        if (checkIfHasActiveClass(glass)) {
+          activeGlassSide = glass.getAttribute('data-side');
+        }
+      });
+
+      paidGlasses.forEach(glass => {
+        if (glass.getAttribute('data-side') !== activeGlassSide) {
+          glass.parentElement.style.display = 'flex';
+        } else {
+          hideGlass(glass);
+        }
+      });
+
+      freeGlasses.forEach(glass => {
+        if (glass.getAttribute('data-side') !== activeGlassSide) {
+          hideGlass(glass);
+        } else {
+          glass.parentElement.style.display = 'flex';
+        }
+      });
+    } else {
+      freeGlasses.forEach(glass => {
+        glass.parentElement.style.display = 'flex';
+      });
+      paidGlasses.forEach(glass => {
+        hideGlass(glass);
+      });
+    }
+  }
+
   // Function to handle radio list click event
   function handleRadioListClick(e) {
     const clickedElement = e.target;
@@ -185,6 +241,14 @@ const initializeWizard = () => {
       // check if 
       handleAccessoriesInactiveElements()
       checkIfShowcolors();
+
+      // get side of clicked element if not null that is not null
+      const side = clickedElement.closest('[data-side]');
+      const sideText = side ? side.dataset.side : null;
+
+      if (sideText !== 'null' && sideText !== null) {
+        checkIfShowPaidGlass()
+      }
 
     } else if (clickedElement.type === 'checkbox') {
       // if clicked element is checkbox, then add or remove class active
@@ -377,6 +441,8 @@ const initializeWizard = () => {
       }
     });
   });
+
+  checkIfShowPaidGlass()
 
   function handleSideClick(tabText, sideText, target) {
     const dataName = target.getAttribute('data-name');
