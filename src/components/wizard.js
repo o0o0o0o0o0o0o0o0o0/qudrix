@@ -9,7 +9,8 @@ const initializeWizard = () => {
   const wizardTabLinks = document.querySelectorAll('.wizard-tab__nav-link div');
   const wizardTab = document.querySelectorAll('.wizard-tab__content-item');
   const totalPriceText = document.querySelector('#total-price');
-  const wizardModelWrapper = document.querySelector('#model-wrapper');
+  const wizardTabLinkElements = document.querySelectorAll('.wizard-tab__nav-link');
+  const wizardDropdowns = document.querySelectorAll('.dropdown');
   const wizardAccessoriesTriggers = document.querySelectorAll('.accessories-button');
   const wizardAccessoriesSidebar = document.querySelector('.wizard-sidebar__accessories-sidebar');
   const wizardAccessoriesSidebarClose = document.querySelector('.wizard-sidebar__accessories-sidebar-close');
@@ -32,6 +33,31 @@ const initializeWizard = () => {
   const paidGlasses = document.querySelectorAll('[data-name="Glass Window Paid"]');
   const freeGlasses = document.querySelectorAll('[data-name="Glass Window"]');
   const iframe = document.querySelector('iframe.model-iframe');
+
+  // function to add hash to iframe src on click wizardTabLinkElements
+  wizardTabLinkElements.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const tab = e.target.closest('.wizard-tab__nav-link').getAttribute('data-tab');
+      if (iframe.src.includes('#')) {
+        // if iframe src have hash, then remove it and add new
+        iframe.src = iframe.src.split('#')[0] + `#${tab}`;
+      } else {
+        iframe.src = iframe.src + `#${tab}`;
+      }
+    });
+  });
+
+  wizardDropdowns.forEach(dropdown => {
+    dropdown.addEventListener('click', (e => {
+      // get data-side
+      const side = e.target.closest('[data-side]') ? e.target.closest('[data-side]').getAttribute('data-side') : null;
+
+      // check if iframe src have hash #side, if yes, then add data-side to hash
+      if (iframe.src.includes('#')) {
+        iframe.src = iframe.src.split('#')[0] + `#sides-${side}`;
+      }
+    }));
+  });
 
 
   // function to open side bar
@@ -453,13 +479,6 @@ const initializeWizard = () => {
         wizardParametrs[tabText][sideText]["accessory1-name"] = "None";
         wizardParametrs[tabText][sideText]["accessory2-name"] = "None";
       }
-      // add hash with tabText-sideText to the end of the iframe src to update the model if it havent hash, update if have
-      if (iframe.src.includes('#')) {
-        // if iframe src have hash, then remove it and add new one
-        iframe.src = iframe.src.split('#')[0] + `#${tabText}-${sideText}`;
-      } else {
-        iframe.src = iframe.src + `#${tabText}-${sideText}`;
-      }
 
       updateCodeElement();
       handleSession();
@@ -479,12 +498,6 @@ const initializeWizard = () => {
       wizardParametrs[tabText]["element-name"] = dataName;
       if (wizardParametrs[tabText]["accessory1-name"]) {
         wizardParametrs[tabText]["accessory1-name"] = "None";
-      }
-      if (iframe.src.includes('#')) {
-        // if iframe src have hash, then remove it and add new one
-        iframe.src = iframe.src.split('#')[0] + `#${tabText}`;
-      } else {
-        iframe.src = iframe.src + `#${tabText}`;
       }
       updateCodeElement();
       handleSession();
