@@ -30,7 +30,8 @@ const initializeWizard = () => {
   const wizardSidebarClose = document.querySelector('.wizard-sidebar__overlay');
   const wizardSidebar = document.querySelector('#wizard-sidebar');
   const paidGlasses = document.querySelectorAll('[data-name="Glass Window Paid"]');
-  const freeGlasses = document.querySelectorAll('[data-name="Glass Window"]')
+  const freeGlasses = document.querySelectorAll('[data-name="Glass Window"]');
+  const iframe = document.querySelector('iframe.model-iframe');
 
 
   // function to open side bar
@@ -452,6 +453,14 @@ const initializeWizard = () => {
         wizardParametrs[tabText][sideText]["accessory1-name"] = "None";
         wizardParametrs[tabText][sideText]["accessory2-name"] = "None";
       }
+      // add hash with tabText-sideText to the end of the iframe src to update the model if it havent hash, update if have
+      if (iframe.src.includes('#')) {
+        // if iframe src have hash, then remove it and add new one
+        iframe.src = iframe.src.split('#')[0] + `#${tabText}-${sideText}`;
+      } else {
+        iframe.src = iframe.src + `#${tabText}-${sideText}`;
+      }
+
       updateCodeElement();
       handleSession();
     }
@@ -471,6 +480,12 @@ const initializeWizard = () => {
       if (wizardParametrs[tabText]["accessory1-name"]) {
         wizardParametrs[tabText]["accessory1-name"] = "None";
       }
+      if (iframe.src.includes('#')) {
+        // if iframe src have hash, then remove it and add new one
+        iframe.src = iframe.src.split('#')[0] + `#${tabText}`;
+      } else {
+        iframe.src = iframe.src + `#${tabText}`;
+      }
       updateCodeElement();
       handleSession();
     }
@@ -489,12 +504,6 @@ const initializeWizard = () => {
         if (dataAccessory === 'No accessories') {
           wizardParametrs[tabText][`accessory1-name`] = 'None';
         } else {
-          // remove None from wizardParametrs[tabText][`accessory0-name`]
-          /*
-          if (wizardParametrs[tabText][`accessory1-name`] === 'None') {
-            delete wizardParametrs[tabText][`accessory1-name`];
-          }
-          */
           wizardParametrs[tabText][`accessory1-name`] = dataAccessory;
         }
         updateCodeElement();
@@ -930,14 +939,7 @@ const initializeWizard = () => {
           // add sessionId to cookie
           document.cookie = `sessionId=${sessionId}`;
           // adding iframe to wizardModelWrapper
-          const iframe = document.createElement('iframe');
           iframe.setAttribute('src', `https://spiffy-frangollo-487b0a.netlify.app/?sessionId=${sessionId}`);
-          iframe.setAttribute('frameborder', '0');
-          iframe.setAttribute('allowfullscreen', 'true');
-          iframe.setAttribute('scrolling', 'no');
-          iframe.setAttribute('style', 'width: 100%; height: 100%;');
-          wizardModelWrapper.appendChild(iframe);
-
           // opacity 0 for loader and then display none
           const loader = document.querySelector('.preloader');
 
@@ -1014,3 +1016,4 @@ const initializeWizard = () => {
 };
 
 export default initializeWizard;
+
