@@ -211,7 +211,7 @@ function initializeAnimations() {
         setCanvasSize();
         render();
       }
-
+      console.log("canvas loaded");
       resizeAndRender();
     }
 
@@ -222,7 +222,7 @@ function initializeAnimations() {
       initCanvas(canvasElement, 0.75, 0.75);
     }
 
-    if (canvasElement && window.innerWidth > 768 && window.scrollY > window.innerHeight * 4) {
+    if (canvasElement && window.innerWidth > 768) {
       resizeCanvas();
       window.addEventListener("resize", resizeCanvas);
     }
