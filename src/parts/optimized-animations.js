@@ -236,7 +236,7 @@ function initializeAnimations() {
 
   }
 
-  canvasAnimation();
+  //canvasAnimation();
 
   // ---- hero animation home page ----
   function heroAnimation(element, start, end, y) {
