@@ -355,7 +355,6 @@ const initializeWizard = () => {
   // Function to update codeElement content based on wizardParametrs object
   const updateCodeElement = () => {
     codeElement.textContent = JSON.stringify(wizardParametrs, null, 2).replace(/,/g, ',\n');
-    console.log(codeElement.textContent)
     // convert wizardParametrs to json, and add or update in local storage
     localStorage.setItem('wizardParametrs', JSON.stringify(wizardParametrs));
 
@@ -945,15 +944,11 @@ const initializeWizard = () => {
       // init session
       initSession(wizardParametrs)
         .then(sessionData => {
-          // update price
+          console.log(sessionData)
           updatePrice(sessionData.price);
-          // update session id
           sessionId = sessionData.sessionId;
-          // add sessionId to cookie
           document.cookie = `sessionId=${sessionId}`;
-          // adding iframe to wizardModelWrapper
           iframe.setAttribute('src', `https://spiffy-frangollo-487b0a.netlify.app/?sessionId=${sessionId}`);
-          // opacity 0 for loader and then display none
           const loader = document.querySelector('.preloader');
 
           setTimeout(() => {
