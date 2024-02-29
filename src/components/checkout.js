@@ -1,14 +1,19 @@
 import { loadStripe } from '@stripe/stripe-js';
 
 const checkout = async (sessionId) => {
-  const stripe = await loadStripe("pk_test_51MUELBG2BGcSuzlBbE8Y3jkJMllhaLM6RzCOnVVMtyRgrS4OJkC4KeKE5paS5jqx1okOXjl8xWqKaIvCrqztjWq400m2Qg3JWN");
-  let elements = await initialize();
-
   const devHost = "https://api3dwizard.ozero.aegas.it";
   const prodHost = "https://api.qudrix.com";
+  const devPK = "pk_test_51MUELBG2BGcSuzlBbE8Y3jkJMllhaLM6RzCOnVVMtyRgrS4OJkC4KeKE5paS5jqx1okOXjl8xWqKaIvCrqztjWq400m2Qg3JWN";
+  const prodPK = "pk_live_51NlJI1BXPjHeXiPV5ekd4In9FDE98fb2V9L53O0ESqmurFepdbWzqBsZyqUvFtYSUpVTcSMIVmuX9TSngLo4N6px00SSWa3Kro";
 
   const url = window.location.href;
   const host = url.includes("webflow") ? devHost : prodHost;
+  const pk = url.includes("webflow") ? devPK : prodPK;
+
+  const stripe = await loadStripe(pk);
+  let elements = await initialize();
+
+
 
   document
     .getElementById("payment-form")
