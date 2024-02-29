@@ -122,10 +122,16 @@ const checkout = async (sessionId) => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const prodURL = "https://www.qudrix.com/success";
+    const devURL = "https://qudrix.webflow.io/success";
+
+    // check curent url
+    const url = window.location.href;
+    const returnUrl = url.includes("webflow") ? devURL : prodURL;
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "https://qudrix.webflow.io/success",
+        return_url: returnUrl,
       },
     });
     if (error.type === "card_error" || error.type === "validation_error") {
