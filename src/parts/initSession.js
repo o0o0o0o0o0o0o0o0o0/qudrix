@@ -2,6 +2,12 @@ const initSession = async (obj) => {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
+  const devHost = "https://api3dwizard.ozero.aegas.it";
+  const prodHost = "https://api.qudrix.com";
+
+  const url = window.location.href;
+  const host = url.includes("webflow") ? devHost : prodHost;
+
   const raw = JSON.stringify(obj);
 
   const sessionCreateOptions = {
@@ -11,11 +17,12 @@ const initSession = async (obj) => {
     redirect: 'follow'
   };
 
-  return fetch("https://api3dwizard.ozero.aegas.it/sessions?projectId=1", sessionCreateOptions)
+  return fetch(`${host}/sessions?projectId=1`, sessionCreateOptions)
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
+      console.log(host);
       return response.json();
     })
     .catch(error => {
