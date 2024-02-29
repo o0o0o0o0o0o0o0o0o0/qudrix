@@ -11,7 +11,7 @@ const updateSession = (obj, sessionId) => {
     redirect: 'follow'
   };
 
-  return fetch(`https://api3dwizard.ozero.aegas.it/sessions/${sessionId}/raw-data`, requestOptions)
+  return fetch(`https://api.qudrix.com/sessions/${sessionId}/raw-data`, requestOptions)
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
