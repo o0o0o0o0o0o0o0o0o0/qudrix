@@ -9,6 +9,7 @@ const checkout = async (sessionId) => {
   const url = window.location.href;
   const host = url.includes("webflow") ? devHost : prodHost;
   const pk = url.includes("webflow") ? devPK : prodPK;
+  console.log(pk, host)
 
   const stripe = await loadStripe(pk);
   let elements = await initialize();
@@ -19,7 +20,7 @@ const checkout = async (sessionId) => {
     .getElementById("payment-form")
     .addEventListener("submit", handleSubmit);
   async function initialize() {
-    const response = await fetch(`${host}sessions/${sessionId}/checkout`, {
+    const response = await fetch(`${host}/sessions/${sessionId}/checkout`, {
       method: 'GET',
       redirect: 'follow'
     });
