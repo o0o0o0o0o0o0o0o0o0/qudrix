@@ -944,11 +944,15 @@ const initializeWizard = () => {
       // init session
       initSession(wizardParametrs)
         .then(sessionData => {
-          console.log(sessionData)
+          const prodApp = 'https://model.qudrix.com/';
+          const devApp = 'https://spiffy-frangollo-487b0a.netlify.app/';
+          const url = window.location.href;
+          const currentApp = url.includes("webflow") ? devApp : prodApp;
+
           updatePrice(sessionData.price);
           sessionId = sessionData.sessionId;
           document.cookie = `sessionId=${sessionId}`;
-          iframe.setAttribute('src', `https://spiffy-frangollo-487b0a.netlify.app/?sessionId=${sessionId}`);
+          iframe.setAttribute('src', `${currentApp}?sessionId=${sessionId}`);
           const loader = document.querySelector('.preloader');
 
           setTimeout(() => {

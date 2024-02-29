@@ -22,7 +22,6 @@ const initSession = async (obj) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      console.log(host);
       return response.json();
     })
     .catch(error => {
