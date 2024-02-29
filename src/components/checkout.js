@@ -4,11 +4,17 @@ const checkout = async (sessionId) => {
   const stripe = await loadStripe("pk_test_51MUELBG2BGcSuzlBbE8Y3jkJMllhaLM6RzCOnVVMtyRgrS4OJkC4KeKE5paS5jqx1okOXjl8xWqKaIvCrqztjWq400m2Qg3JWN");
   let elements = await initialize();
 
+  const devHost = "https://api3dwizard.ozero.aegas.it";
+  const prodHost = "https://api.qudrix.com";
+
+  const url = window.location.href;
+  const host = url.includes("webflow") ? devHost : prodHost;
+
   document
     .getElementById("payment-form")
     .addEventListener("submit", handleSubmit);
   async function initialize() {
-    const response = await fetch(`https://api3dwizard.ozero.aegas.it/sessions/${sessionId}/checkout`, {
+    const response = await fetch(`${host}sessions/${sessionId}/checkout`, {
       method: 'GET',
       redirect: 'follow'
     });
