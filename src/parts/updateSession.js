@@ -1,27 +1,30 @@
 const updateSession = (obj, sessionId) => {
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
+  const myHeaders = new Headers()
+  myHeaders.append('Content-Type', 'application/json')
 
-  const raw = JSON.stringify(obj);
+  const raw = JSON.stringify(obj)
 
   const requestOptions = {
     method: 'PUT',
     headers: myHeaders,
     body: raw,
-    redirect: 'follow'
-  };
+    redirect: 'follow',
+  }
 
-  return fetch(`https://api.qudrix.com/sessions/${sessionId}/raw-data`, requestOptions)
-    .then(response => {
+  return fetch(
+    `https://api.qudrix.site/sessions/${sessionId}/raw-data`,
+    requestOptions
+  )
+    .then((response) => {
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('Network response was not ok')
       }
-      return response.json();
+      return response.json()
     })
-    .catch(error => {
-      console.error('Error updating session:', error);
-      throw error;
-    });
-};
+    .catch((error) => {
+      console.error('Error updating session:', error)
+      throw error
+    })
+}
 
-export default updateSession;
+export default updateSession
